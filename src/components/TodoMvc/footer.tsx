@@ -5,10 +5,10 @@
 
 import * as React from 'react';
 import classNames from 'classnames';
+import { routing } from '@/routing';
 import { ACTIVE_TODOS, ALL_TODOS, COMPLETED_TODOS } from './constants';
 import { ITodoFooterProps } from './interfaces';
 import { Utils } from './utils';
-import { routing } from '@/routing';
 
 class TodoFooter extends React.Component<ITodoFooterProps, {}> {
   public render() {
@@ -31,12 +31,18 @@ class TodoFooter extends React.Component<ITodoFooterProps, {}> {
         </span>
         <ul className="filters">
           <li>
-            <a href={routing.todos.all.href} className={classNames({ selected: nowShowing === ALL_TODOS })}>
+            <a
+              href={routing.todos.all.href}
+              className={classNames({ selected: nowShowing === ALL_TODOS })}
+            >
               All
             </a>
           </li>{' '}
           <li>
-            <a href={routing.todos.active.href} className={classNames({ selected: nowShowing === ACTIVE_TODOS })}>
+            <a
+              href={routing.todos.active.href}
+              className={classNames({ selected: nowShowing === ACTIVE_TODOS })}
+            >
               Active
             </a>
           </li>{' '}
