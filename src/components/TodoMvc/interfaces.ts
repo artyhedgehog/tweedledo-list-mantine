@@ -44,6 +44,10 @@ export interface ITodoModel {
 
 export interface ILocation {
   pathname: string;
+  search: string;
+  key: string;
+  /** @example "#/active" */
+  hash: string;
 }
 
 export interface IAppProps {

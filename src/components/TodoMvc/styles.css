@@ -16,7 +16,7 @@ body {
     transition: color 0.2s ease-out;
 }
 
-.todo-list li .edit-item:after {
+.todo-list li .edit-item::after {
     content: '✏';
     display: block;
     height: 100%;

@@ -8,6 +8,7 @@ import { TodoModel } from './todoModel';
 import 'todomvc-common/base.css';
 import 'todomvc-app-css/index.css';
 import './styles.css';
+import { routing } from '@/routing';
 
 export class TodoApp extends React.Component<IAppProps, IAppState> {
   public state: IAppState;
@@ -29,13 +30,13 @@ export class TodoApp extends React.Component<IAppProps, IAppState> {
     this.model.subscribe(this.forceUpdate.bind(this));
   }
 
-  private getStateFromPath(path: string): IAppState {
-    switch (path) {
-      case '/':
+  private getStateFromPath({ hash }: { hash: string }): IAppState {
+    switch (hash) {
+      case routing.todos.all.hash:
         return { nowShowing: ALL_TODOS };
-      case '/active':
+      case routing.todos.active.hash:
         return { nowShowing: ACTIVE_TODOS };
-      case '/completed':
+      case routing.todos.completed.hash:
         return { nowShowing: COMPLETED_TODOS };
     }
 
@@ -43,15 +44,14 @@ export class TodoApp extends React.Component<IAppProps, IAppState> {
   }
 
   public componentDidMount() {
-    this.setState(this.getStateFromPath('/'));
+    this.setState(this.getStateFromPath(routing.todos.all));
   }
 
   public componentDidUpdate(prevProps: IAppProps) {
-    const path = this.props.location.pathname;
-    if (path !== prevProps.location.pathname) {
+    if (this.props.location.hash !== prevProps.location.hash) {
       // Route changed - update state
-      this.setState(this.getStateFromPath(path));
-      console.log('Route changed:', path);
+      this.setState(this.getStateFromPath(this.props.location));
+      console.log('Route changed: ', this.props.location.hash);
     }
   }
 
