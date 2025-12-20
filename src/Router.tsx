@@ -1,10 +1,14 @@
-import { createBrowserRouter, RouterProvider } from 'react-router-dom';
+import { createBrowserRouter, Navigate, RouterProvider } from 'react-router-dom';
 import { ListPage } from './pages/List.page';
 
 const router = createBrowserRouter([
   {
     path: '/',
-    element: <ListPage />,
+    element: <Navigate to="/groceries" replace />,
+  },
+  {
+    path: '/groceries',
+    element: <ListPage list="groceries" />,
   },
 ]);
 

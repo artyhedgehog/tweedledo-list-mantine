@@ -2,6 +2,10 @@ body {
     background-color: #033f63;
 }
 
+.todoapp {
+    margin: 0;
+}
+
 .todo-list li .edit-item {
     display: none;
     position: absolute;

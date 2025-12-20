@@ -30,7 +30,7 @@ if (!framework) {
   )
 }
 
-const getExampleFolder = framework => ''
+const getExampleFolder = framework => 'groceries'
 
 const title = `TodoMVC - ${framework}`
 
@@ -301,7 +301,7 @@ Cypress._.times(N, () => {
       // how to determine if we need to use ids or classes?
       // it is painful to have both types of elements in the
       // same tests - because our assertions often use `.should('have.class', ...)`
-      cy.contains('h1', 'todos').should('be.visible')
+      cy.contains('a', 'Groceries').should('be.visible')
       cy.document().then(doc => {
         if (doc.querySelector('input#new-todo') && doc.querySelector('input.new-todo')) {
           throw new Error(

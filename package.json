@@ -20,13 +20,14 @@
     "cy:open": "cypress open",
     "cy:run": "cypress run --browser chrome",
     "cy:test": "npm run preview:clean && npm run cy:run",
-    "test": "npm run typecheck && npm run prettier && npm run lint && npm run vitest && npm run build && npm run cy:run",
+    "test": "npm run typecheck && npm run prettier && npm run lint && npm run vitest && npm run cy:test",
     "storybook": "storybook dev -p 6006",
     "storybook:build": "storybook build"
   },
   "dependencies": {
     "@mantine/core": "8.3.10",
     "@mantine/hooks": "8.3.10",
+    "@tabler/icons-react": "3.36.0",
     "classnames": "2.5.1",
     "react": "^19.2.0",
     "react-dom": "^19.2.0",

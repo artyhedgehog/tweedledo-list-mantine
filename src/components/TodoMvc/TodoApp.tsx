@@ -21,7 +21,7 @@ export class TodoApp extends React.Component<IAppProps, IAppState> {
   constructor(props: IAppProps) {
     super(props);
 
-    this.model = new TodoModel('react-todos');
+    this.model = new TodoModel(`shopping-list:${props.list}`);
 
     this.state = {
       nowShowing: ALL_TODOS,
@@ -178,18 +178,17 @@ export class TodoApp extends React.Component<IAppProps, IAppState> {
 
     return (
       <div>
-        <header className="header">
-          <h1>todos</h1>
+        <div className="header">
           <input
             ref={(node) => {
               this.newFieldRef = node;
             }}
             className="new-todo"
-            placeholder="What needs to be done?"
+            placeholder="What do I need to buy?"
             onKeyDown={(e) => this.handleNewTodoKeyDown(e)}
             autoFocus
           />
-        </header>
+        </div>
         {main}
         {footer}
       </div>
