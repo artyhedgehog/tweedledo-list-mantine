@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { ACTIVE_TODOS, ALL_TODOS, COMPLETED_TODOS, ENTER_KEY } from './constants';
+import { ACTIVE_TODOS, ALL_TODOS, ARCHIVED_TODOS, COMPLETED_TODOS, ENTER_KEY } from './constants';
 import { TodoFooter } from './footer';
 import { IAppProps, IAppState, ITodo, ITodoModel } from './interfaces';
 import { TodoItem } from './todoItem';
@@ -39,6 +39,8 @@ export class TodoApp extends React.Component<IAppProps, IAppState> {
         return { nowShowing: ACTIVE_TODOS };
       case routing.todos.completed.hash:
         return { nowShowing: COMPLETED_TODOS };
+      case routing.todos.archived.hash:
+        return { nowShowing: ARCHIVED_TODOS };
     }
 
     return {};
@@ -87,6 +89,10 @@ export class TodoApp extends React.Component<IAppProps, IAppState> {
     this.model.toggle(todoToToggle);
   }
 
+  public unarchive(todo: ITodo) {
+    this.model.unarchive(todo);
+  }
+
   public destroy(todo: ITodo) {
     this.model.destroy(todo);
   }
@@ -105,7 +111,7 @@ export class TodoApp extends React.Component<IAppProps, IAppState> {
   }
 
   public clearCompleted() {
-    this.model.clearCompleted();
+    this.model.archiveCompleted();
   }
 
   public render() {
@@ -116,9 +122,13 @@ export class TodoApp extends React.Component<IAppProps, IAppState> {
     const shownTodos = todos.filter((todo) => {
       switch (this.state.nowShowing) {
         case ACTIVE_TODOS:
-          return !todo.completed;
+          return !todo.completed && !todo.archived;
         case COMPLETED_TODOS:
-          return todo.completed;
+          return todo.completed && !todo.archived;
+        case ARCHIVED_TODOS:
+          return todo.archived;
+        case ALL_TODOS:
+          return !todo.archived;
         default:
           return true;
       }
@@ -130,6 +140,7 @@ export class TodoApp extends React.Component<IAppProps, IAppState> {
           key={todo.id}
           todo={todo}
           onToggle={this.toggle.bind(this, todo)}
+          onUnarchive={this.unarchive.bind(this, todo)}
           onDestroy={this.destroy.bind(this, todo)}
           onEdit={this.edit.bind(this, todo)}
           editing={this.state.editing === todo.id}
@@ -155,7 +166,7 @@ export class TodoApp extends React.Component<IAppProps, IAppState> {
           count={activeTodoCount}
           completedCount={completedCount}
           nowShowing={this.state.nowShowing}
-          onClearCompleted={() => this.clearCompleted()}
+          onArchiveCompleted={() => this.clearCompleted()}
         />
       );
     }

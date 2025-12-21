@@ -10,5 +10,6 @@ export const routing = {
     all: routeConfig('#/'),
     active: routeConfig('#/active'),
     completed: routeConfig('#/completed'),
+    archived: routeConfig('#/archived'),
   },
 };

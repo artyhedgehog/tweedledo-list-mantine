@@ -4,7 +4,9 @@
 /*jshint newcap: false */
 
 import * as React from 'react';
+import { IconTextPlus } from '@tabler/icons-react';
 import classNames from 'classnames';
+import { ActionIcon } from '@mantine/core';
 import { ENTER_KEY, ESCAPE_KEY } from './constants';
 import { ITodoItemProps, ITodoItemState } from './interfaces';
 
@@ -91,12 +93,23 @@ class TodoItem extends React.Component<ITodoItemProps, ITodoItemState> {
         })}
       >
         <div className="view">
-          <input
-            className="toggle"
-            type="checkbox"
-            checked={this.props.todo.completed}
-            onChange={this.props.onToggle}
-          />
+          {this.props.todo.archived ? (
+            <ActionIcon
+              className="unarchive"
+              onClick={this.props.onUnarchive}
+              display="block"
+              pos="absolute"
+            >
+              <IconTextPlus />
+            </ActionIcon>
+          ) : (
+            <input
+              className="toggle"
+              type="checkbox"
+              checked={this.props.todo.completed}
+              onChange={this.props.onToggle}
+            />
+          )}
           <label onDoubleClick={() => this.handleEdit()}>{this.props.todo.title}</label>
           <button type="button" className="edit-item" onClick={this.props.onEdit} />
           <button type="button" className="destroy" onClick={this.props.onDestroy} />

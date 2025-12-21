@@ -63,6 +63,14 @@ class TodoModel implements ITodoModel {
     this.inform();
   }
 
+  public unarchive(todoToUnarchive: ITodo) {
+    this.todos = this.todos.map<ITodo>((todo: ITodo) => {
+      return todo !== todoToUnarchive ? todo : Utils.extend({}, todo, { archived: false });
+    });
+
+    this.inform();
+  }
+
   public destroy(todo: ITodo) {
     this.todos = this.todos.filter((candidate) => {
       return candidate !== todo;
@@ -79,9 +87,25 @@ class TodoModel implements ITodoModel {
     this.inform();
   }
 
-  public clearCompleted() {
+  public archiveCompleted() {
+    this.todos = this.todos.map<ITodo>((todo: ITodo) => {
+      return todo.completed ? Utils.extend({}, todo, { completed: false, archived: true }) : todo;
+    });
+
+    this.inform();
+  }
+
+  public destroyCompleted() {
     this.todos = this.todos.filter((todo) => {
       return !todo.completed;
+    });
+
+    this.inform();
+  }
+
+  public destroyArchived() {
+    this.todos = this.todos.filter((todo) => {
+      return !todo.archived;
     });
 
     this.inform();

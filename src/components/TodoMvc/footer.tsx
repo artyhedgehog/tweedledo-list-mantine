@@ -5,8 +5,9 @@
 
 import * as React from 'react';
 import classNames from 'classnames';
+import { Button } from '@mantine/core';
 import { routing } from '@/routing';
-import { ACTIVE_TODOS, ALL_TODOS, COMPLETED_TODOS } from './constants';
+import { ACTIVE_TODOS, ALL_TODOS, ARCHIVED_TODOS, COMPLETED_TODOS } from './constants';
 import { ITodoFooterProps } from './interfaces';
 import { Utils } from './utils';
 
@@ -17,9 +18,9 @@ class TodoFooter extends React.Component<ITodoFooterProps, {}> {
 
     if (this.props.completedCount > 0) {
       clearButton = (
-        <button type="button" className="clear-completed" onClick={this.props.onClearCompleted}>
-          Clear completed
-        </button>
+        <Button size="xs" className="clear-completed" onClick={this.props.onArchiveCompleted}>
+          Check out
+        </Button>
       );
     }
 
@@ -32,10 +33,18 @@ class TodoFooter extends React.Component<ITodoFooterProps, {}> {
         <ul className="filters">
           <li>
             <a
+              href={routing.todos.archived.href}
+              className={classNames({ selected: nowShowing === ARCHIVED_TODOS })}
+            >
+              In stock
+            </a>
+          </li>{' '}
+          <li>
+            <a
               href={routing.todos.all.href}
               className={classNames({ selected: nowShowing === ALL_TODOS })}
             >
-              All
+              Shop
             </a>
           </li>{' '}
           <li>
@@ -43,7 +52,7 @@ class TodoFooter extends React.Component<ITodoFooterProps, {}> {
               href={routing.todos.active.href}
               className={classNames({ selected: nowShowing === ACTIVE_TODOS })}
             >
-              Active
+              To buy
             </a>
           </li>{' '}
           <li>
@@ -51,7 +60,7 @@ class TodoFooter extends React.Component<ITodoFooterProps, {}> {
               href={routing.todos.completed.href}
               className={classNames({ selected: nowShowing === COMPLETED_TODOS })}
             >
-              Completed
+              Cart
             </a>
           </li>
         </ul>

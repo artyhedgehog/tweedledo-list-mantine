@@ -2,6 +2,7 @@ export interface ITodo {
   id: string;
   title: string;
   completed: boolean;
+  archived?: boolean;
 }
 
 export interface ITodoItemProps {
@@ -13,6 +14,7 @@ export interface ITodoItemProps {
   onEdit: () => void;
   onCancel: (event: any) => void;
   onToggle: () => void;
+  onUnarchive: () => void;
 }
 
 export interface ITodoItemState {
@@ -21,7 +23,7 @@ export interface ITodoItemState {
 
 export interface ITodoFooterProps {
   completedCount: number;
-  onClearCompleted: any;
+  onArchiveCompleted: NotificationCallback;
   nowShowing: string | undefined;
   count: number;
 }
@@ -37,9 +39,12 @@ export interface ITodoModel {
   addTodo: (title: string) => void;
   toggleAll: (checked: boolean) => void;
   toggle: (todoToToggle: ITodo) => void;
+  unarchive: (todo: ITodo) => void;
   destroy: (todo: ITodo) => void;
   save: (todoToSave: ITodo, text: string) => void;
-  clearCompleted: () => void;
+  archiveCompleted: () => void;
+  destroyCompleted: () => void;
+  destroyArchived: () => void;
 }
 
 export interface ILocation {

@@ -697,7 +697,7 @@ Cypress._.times(N, () => {
 
       it('should display the correct text', function () {
         cy.get('@todos').eq(0).find('.toggle').check()
-        cy.get(selectors.clearCompleted).contains('Clear completed')
+        cy.get(selectors.clearCompleted).contains('Check out')
       })
 
       it('should remove completed items when clicked', function () {
@@ -759,7 +759,7 @@ Cypress._.times(N, () => {
       it('should allow me to display active items', function () {
         cy.get('@todos').eq(1).find('.toggle').check()
         checkNumberOfCompletedTodosInLocalStorage(1)
-        cy.contains(selectors.filterItems, 'Active').click()
+        cy.contains(selectors.filterItems, 'To buy').click()
         visibleTodos()
           .should('have.length', 2)
           .eq(0)
@@ -772,13 +772,13 @@ Cypress._.times(N, () => {
         checkNumberOfCompletedTodosInLocalStorage(1)
 
         cy.log('Showing all items')
-        cy.contains(selectors.filterItems, 'All').click()
+        cy.contains(selectors.filterItems, 'Shop').click()
         visibleTodos().should('have.length', 3)
 
         cy.log('Showing active items')
-        cy.contains(selectors.filterItems, 'Active').click()
+        cy.contains(selectors.filterItems, 'To buy').click()
         cy.log('Showing completed items')
-        cy.contains(selectors.filterItems, 'Completed').click()
+        cy.contains(selectors.filterItems, 'Cart').click()
         visibleTodos().should('have.length', 1)
 
         cy.log('Back to active items')
@@ -793,32 +793,32 @@ Cypress._.times(N, () => {
       it('should allow me to display completed items', function () {
         visibleTodos().eq(1).find('.toggle').check()
         checkNumberOfCompletedTodosInLocalStorage(1)
-        cy.get(selectors.filters).contains('Completed').click()
+        cy.get(selectors.filters).contains('Cart').click()
         visibleTodos().should('have.length', 1)
       })
 
       it('should allow me to display all items', function () {
         visibleTodos().eq(1).find('.toggle').check()
         checkNumberOfCompletedTodosInLocalStorage(1)
-        cy.get(selectors.filters).contains('Active').click()
-        cy.get(selectors.filters).contains('Completed').click()
-        cy.get(selectors.filters).contains('All').click()
+        cy.get(selectors.filters).contains('To buy').click()
+        cy.get(selectors.filters).contains('Cart').click()
+        cy.get(selectors.filters).contains('Shop').click()
         visibleTodos().should('have.length', 3)
       })
 
       it('should highlight the currently applied filter', function () {
         cy
-          .contains(selectors.filterItems, 'All')
+          .contains(selectors.filterItems, 'Shop')
           .should('have.class', 'selected')
-        cy.contains(selectors.filterItems, 'Active').click()
+        cy.contains(selectors.filterItems, 'To buy').click()
         // page change - active items
         cy
-          .contains(selectors.filterItems, 'Active')
+          .contains(selectors.filterItems, 'To buy')
           .should('have.class', 'selected')
-        cy.contains(selectors.filterItems, 'Completed').click()
+        cy.contains(selectors.filterItems, 'Cart').click()
         // page change - completed items
         cy
-          .contains(selectors.filterItems, 'Completed')
+          .contains(selectors.filterItems, 'Cart')
           .should('have.class', 'selected')
       })
     })

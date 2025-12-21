@@ -34,3 +34,10 @@ body {
 .footer {
     box-sizing: content-box;
 }
+
+.unarchive {
+    margin: auto 0;
+    top: 0;
+    bottom: 0;
+    left: 10px;
+}
