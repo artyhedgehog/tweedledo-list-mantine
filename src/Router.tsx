@@ -10,6 +10,14 @@ const router = createBrowserRouter([
     path: '/groceries',
     element: <ListPage list="groceries" />,
   },
+  {
+    path: '/pharmacy',
+    element: <ListPage list="pharmacy" />,
+  },
+  {
+    path: '/misc',
+    element: <ListPage list="misc" />,
+  },
 ]);
 
 export function Router() {

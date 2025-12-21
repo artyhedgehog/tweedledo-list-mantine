@@ -55,7 +55,7 @@ export interface ILocation {
   hash: string;
 }
 
-export type ListName = 'groceries';
+export type ListName = 'groceries' | 'pharmacy' | 'misc';
 
 export interface IAppProps {
   location: ILocation;

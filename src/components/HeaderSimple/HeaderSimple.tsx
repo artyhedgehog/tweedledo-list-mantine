@@ -1,15 +1,20 @@
-import { useState } from 'react';
 import { IconExternalLink, IconShoppingBagEdit } from '@tabler/icons-react';
+import { useLocation } from 'react-router-dom';
 import { Burger, Container, Group, Menu } from '@mantine/core';
 import { useDisclosure } from '@mantine/hooks';
 import classes from './HeaderSimple.module.css';
 
-const links = [{ link: '/groceries', label: 'Groceries' }];
+const links = [
+  { link: '/groceries', label: 'Groceries' },
+  { link: '/pharmacy', label: 'Pharmacy' },
+  { link: '/misc', label: 'Misc' },
+];
 
 export function HeaderSimple() {
   const homeHref = links[0].link;
   const [opened, { toggle }] = useDisclosure(false);
-  const [active, setActive] = useState(homeHref);
+  const location = useLocation();
+  const active = location.pathname;
 
   const items = links.map((link) => (
     <a
@@ -17,9 +22,6 @@ export function HeaderSimple() {
       href={link.link}
       className={classes.link}
       data-active={active === link.link || undefined}
-      onClick={() => {
-        setActive(link.link);
-      }}
     >
       {link.label}
     </a>
