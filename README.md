@@ -1,8 +1,12 @@
-# Mantine Vite template
+# TweedleDo List 
 
-## Features
+This PWA app is intended to manag todo lists - e.g. a shopping list.
 
-This template comes with the following features:
+For now all the data is just saved in `localStorage`.
+
+## Mantine Vite template features
+
+The app is based on Mantine Vite template, which comes with the following features:
 
 - [PostCSS](https://postcss.org/) with [mantine-postcss-preset](https://mantine.dev/styles/postcss-preset)
 - [TypeScript](https://www.typescriptlang.org/)

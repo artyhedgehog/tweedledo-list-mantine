@@ -1,0 +1,8 @@
+{
+    "short_name": "TweedleDo List",
+    "name": "TweedleDo List: an app for managing todo list, specifically shopping lists",
+    "icons": [],
+    "start_url": "/?source=pwa",
+    "background_color": "#3367D6",
+    "display": "minimal-ui"
+  }
