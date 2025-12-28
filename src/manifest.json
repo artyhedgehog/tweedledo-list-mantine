@@ -1,8 +1,15 @@
 {
-    "short_name": "TweedleDo List",
-    "name": "TweedleDo List: an app for managing todo list, specifically shopping lists",
-    "icons": [],
-    "start_url": "/?source=pwa",
-    "background_color": "#3367D6",
-    "display": "minimal-ui"
-  }
+  "short_name": "TweedleDo Shop",
+  "name": "TweedleDo Shopping List",
+  "icons": [
+    {
+      "src": "/assets/tweedledo-shopping-list-maskable-icon.png",
+      "type": "image/png",
+      "sizes": "512x512"
+    }
+  ],
+  "start_url": "/?source=pwa",
+  "background_color": "#033f63",
+  "display": "minimal-ui",
+  "display_override": ["minimal-ui", "standalone", "browser"]
+}
