@@ -134,7 +134,19 @@ export class TodoApp extends React.Component<IAppProps, IAppState> {
       }
     });
 
-    const todoItems = shownTodos.map((todo) => {
+    const sortedTodos = todos.sort((a, b) => {
+      if (b.title === a.title) {
+        return 0;
+      }
+
+      if (b.title > a.title) {
+        return -1;
+      }
+
+      return 1;
+    })
+
+    const todoItems = sortedTodos.map((todo) => {
       return (
         <TodoItem
           key={todo.id}
