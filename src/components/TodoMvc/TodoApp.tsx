@@ -134,7 +134,7 @@ export class TodoApp extends React.Component<IAppProps, IAppState> {
       }
     });
 
-    const sortedTodos = todos.sort((a, b) => {
+    const sortedTodos = shownTodos.sort((a, b) => {
       if (b.title === a.title) {
         return 0;
       }
@@ -144,7 +144,7 @@ export class TodoApp extends React.Component<IAppProps, IAppState> {
       }
 
       return 1;
-    })
+    });
 
     const todoItems = sortedTodos.map((todo) => {
       return (
