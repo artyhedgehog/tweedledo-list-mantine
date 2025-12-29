@@ -30,14 +30,17 @@
   },
   "dependencies": {
     "@mantine/core": "8.3.10",
+    "@mantine/form": "^8.3.10",
     "@mantine/hooks": "8.3.10",
+    "@mantine/notifications": "^8.3.10",
     "@tabler/icons-react": "3.36.0",
     "classnames": "2.5.1",
     "react": "^19.2.0",
     "react-dom": "^19.2.0",
     "react-router-dom": "^7.9.4",
     "todomvc-app-css": "2.4.3",
-    "todomvc-common": "1.0.5"
+    "todomvc-common": "1.0.5",
+    "yaml": "^2.8.2"
   },
   "devDependencies": {
     "@eslint/js": "^9.37.0",

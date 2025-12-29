@@ -10,6 +10,7 @@ import 'todomvc-app-css/index.css';
 import './styles.css';
 
 import { routing } from '@/routing';
+import { getListNamespace } from '@/utils/lists';
 
 export class TodoApp extends React.Component<IAppProps, IAppState> {
   public state: IAppState;
@@ -21,7 +22,7 @@ export class TodoApp extends React.Component<IAppProps, IAppState> {
   constructor(props: IAppProps) {
     super(props);
 
-    this.model = new TodoModel(`shopping-list:${props.list}`);
+    this.model = new TodoModel(getListNamespace(props.list));
 
     this.state = {
       nowShowing: ALL_TODOS,

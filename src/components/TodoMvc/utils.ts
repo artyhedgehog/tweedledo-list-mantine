@@ -1,3 +1,6 @@
+import { getListNamespace } from '@/utils/lists';
+import { ListName } from './interfaces';
+
 class Utils {
   public static uuid(): string {
     /*jshint bitwise:false */
@@ -19,13 +22,43 @@ class Utils {
     return count === 1 ? word : `${word}s`;
   }
 
+  public static getValue(namespace: string) {
+    const store = localStorage.getItem(namespace);
+
+    return (store && JSON.parse(store)) || [];
+  }
+
+  public static setValue(namespace: string, value: unknown) {
+    localStorage.setItem(namespace, JSON.stringify(value));
+  }
+
+  /**
+   * @todo Remove
+   * @deprecated Use setValue and getValue
+   */
   public static store(namespace: string, data?: any) {
     if (data) {
-      return localStorage.setItem(namespace, JSON.stringify(data));
+      return Utils.setValue(namespace, data);
     }
 
-    const store = localStorage.getItem(namespace);
-    return (store && JSON.parse(store)) || [];
+    return Utils.getValue(namespace);
+  }
+
+  public static getAllData<K extends string>(lists: ListName[]): Record<K, unknown> {
+    const entries = lists.map((list: ListName) => {
+      const namespace = getListNamespace(list);
+      return [namespace, Utils.getValue(namespace)];
+    });
+
+    return Object.fromEntries(entries);
+  }
+
+  public static saveAllData<K extends string>(data: Record<K, unknown>) {
+    const entries = Object.entries(data);
+
+    entries.forEach(([namespace, value]) => {
+      Utils.setValue(namespace, value);
+    });
   }
 
   public static extend(...objs: any[]): any {

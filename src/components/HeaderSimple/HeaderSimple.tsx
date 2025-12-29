@@ -2,28 +2,23 @@ import { IconExternalLink, IconShoppingBagEdit } from '@tabler/icons-react';
 import { useLocation } from 'react-router-dom';
 import { Burger, Container, Group, Menu } from '@mantine/core';
 import { useDisclosure } from '@mantine/hooks';
+import { label, lists, path } from '@/utils/lists';
 import classes from './HeaderSimple.module.css';
 
-const links = [
-  { link: '/groceries', label: 'Groceries' },
-  { link: '/pharmacy', label: 'Pharmacy' },
-  { link: '/misc', label: 'Misc' },
-];
-
 export function HeaderSimple() {
-  const homeHref = links[0].link;
+  const homeHref = path(lists[0]);
   const [opened, { toggle }] = useDisclosure(false);
   const location = useLocation();
   const active = location.pathname;
 
-  const items = links.map((link) => (
+  const items = lists.map((list) => (
     <a
-      key={link.label}
-      href={link.link}
+      key={list}
+      href={path(list)}
       className={classes.link}
-      data-active={active === link.link || undefined}
+      data-active={active === list || undefined}
     >
-      {link.label}
+      {label(list)}
     </a>
   ));
 
@@ -48,6 +43,9 @@ export function HeaderSimple() {
               target="__blank"
             >
               TweedleDo Home
+            </Menu.Item>
+            <Menu.Item component="a" href="/data" target="__blank">
+              Data export/import
             </Menu.Item>
           </Menu.Dropdown>
         </Menu>
