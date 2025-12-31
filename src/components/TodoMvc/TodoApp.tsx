@@ -11,6 +11,7 @@ import './styles.css';
 
 import { routing } from '@/routing';
 import { getListNamespace } from '@/utils/lists';
+import { t } from '@/utils/strings';
 
 export class TodoApp extends React.Component<IAppProps, IAppState> {
   public state: IAppState;
@@ -208,7 +209,7 @@ export class TodoApp extends React.Component<IAppProps, IAppState> {
               this.newFieldRef = node;
             }}
             className="new-todo"
-            placeholder="What do I need to buy?"
+            placeholder={t('searchBar.placeholder')}
             onKeyDown={(e) => this.handleNewTodoKeyDown(e)}
             autoFocus
           />

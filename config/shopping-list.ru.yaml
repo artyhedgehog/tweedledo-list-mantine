@@ -1,2 +1,10 @@
 strings:
   title: TweedleDo Хлебница
+  searchBar.placeholder: Что нужно купить?
+lists:
+  - id: groceries
+    label: Продукты
+  - id: pharmacy
+    label: Аптека
+  - id: misc
+    label: Разное

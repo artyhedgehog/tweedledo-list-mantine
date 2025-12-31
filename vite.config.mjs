@@ -16,6 +16,18 @@ export default defineConfig(({ mode }) => {
   const yamlData = yaml.load(yamlContent);
   const strings = yamlData.strings;
 
+  const configPlugin = {
+    name: 'vite-config-module',
+    resolveId(id) {
+      if (id === 'virtual:vite-config') return id
+    },
+    load(id) {
+      if (id === 'virtual:vite-config') {
+        return `export default ${JSON.stringify(yamlData)}`
+      }
+    }
+  }
+  
   return {
     plugins: [
       react(),
@@ -27,6 +39,7 @@ export default defineConfig(({ mode }) => {
           },
         },
       }),
+      configPlugin,
     ],
     test: {
       globals: true,

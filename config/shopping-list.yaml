@@ -1,2 +1,11 @@
 strings:
   title: TweedleDo Shopping List
+  searchBar.placeholder: What do I need to buy?
+lists:
+  - id: groceries
+    label: Groceries
+  - id: pharmacy
+    label: Pharmacy
+  - id: misc
+    label: Misc
+
