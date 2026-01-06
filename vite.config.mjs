@@ -4,6 +4,7 @@ import react from '@vitejs/plugin-react';
 import yaml from 'js-yaml';
 import { defineConfig, loadEnv } from 'vite';
 import { createHtmlPlugin } from 'vite-plugin-html';
+import { VitePWA } from 'vite-plugin-pwa';
 import tsconfigPaths from 'vite-tsconfig-paths';
 
 export default defineConfig(({ mode }) => {
@@ -19,17 +20,58 @@ export default defineConfig(({ mode }) => {
   const configPlugin = {
     name: 'vite-config-module',
     resolveId(id) {
-      if (id === 'virtual:vite-config') return id
+      if (id === 'virtual:vite-config') return id;
     },
     load(id) {
       if (id === 'virtual:vite-config') {
-        return `export default ${JSON.stringify(yamlData)}`
+        return `export default ${JSON.stringify(yamlData)}`;
       }
-    }
-  }
-  
+    },
+  };
+
   return {
     plugins: [
+      VitePWA({
+        registerType: 'prompt',
+        injectRegister: 'auto',
+        includeAssets: [
+          'assets/favicon.ico',
+          'assets/icon.png',
+          'assets/pwa-192x192.png',
+          'assets/pwa-512x512.png',
+        ],
+        manifest: {
+          short_name: 'ATD Shoplist',
+          name: 'TweedleDo Shopping List',
+          description: "artyhedgehog's TweedleDo Shopping List app",
+          theme_color: '#033f63',
+          icons: [
+            {
+              src: 'assets/pwa-192x192.png',
+              sizes: '192x192',
+              type: 'image/png',
+            },
+            {
+              src: 'assets/pwa-512x512.png',
+              sizes: '512x512',
+              type: 'image/png',
+            },
+            {
+              src: 'assets/pwa-512x512.png',
+              sizes: '512x512',
+              type: 'image/png',
+              purpose: 'any',
+            },
+            {
+              src: 'assets/icon.png',
+              sizes: '512x512',
+              type: 'image/png',
+              purpose: 'maskable',
+            },
+          ],
+          background_color: '#033f63',
+        },
+      }),
       react(),
       tsconfigPaths(),
       createHtmlPlugin({
