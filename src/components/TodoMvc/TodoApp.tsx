@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { ACTIVE_TODOS, ALL_TODOS, ARCHIVED_TODOS, COMPLETED_TODOS, ENTER_KEY } from './constants';
+import { ENTER_KEY } from './constants';
 import { TodoFooter } from './footer';
 import { IAppProps, IAppState, ITodo, ITodoModel } from './interfaces';
 import { TodoItem } from './todoItem';
@@ -9,7 +9,7 @@ import 'todomvc-common/base.css';
 import 'todomvc-app-css/index.css';
 import './styles.css';
 
-import { routing } from '@/routing';
+import config from 'virtual:vite-config';
 import { getListNamespace } from '@/utils/lists';
 import { t } from '@/utils/strings';
 
@@ -26,37 +26,32 @@ export class TodoApp extends React.Component<IAppProps, IAppState> {
     this.model = new TodoModel(getListNamespace(props.list));
 
     this.state = {
-      nowShowing: ALL_TODOS,
+      // TODO Move default state somewhere without using specific key (`.all.`)
+      nowShowing: 'all',
       editing: undefined,
     };
 
     this.model.subscribe(this.forceUpdate.bind(this));
   }
 
-  private getStateFromPath({ hash }: { hash: string }): IAppState {
-    switch (hash) {
-      case routing.todos.all.hash:
-        return { nowShowing: ALL_TODOS };
-      case routing.todos.active.hash:
-        return { nowShowing: ACTIVE_TODOS };
-      case routing.todos.completed.hash:
-        return { nowShowing: COMPLETED_TODOS };
-      case routing.todos.archived.hash:
-        return { nowShowing: ARCHIVED_TODOS };
-    }
+  private getStateFromPath(location: { hash: string }): IAppState {
+    const state = config.states.find(({ hash }: { hash: string }) => {
+      return hash === location.hash;
+    });
 
-    return {};
+    return {
+      nowShowing: state.filter,
+    };
   }
 
   public componentDidMount() {
-    this.setState(this.getStateFromPath(routing.todos.all));
+    this.setState(this.getStateFromPath({ hash: '#/' }));
   }
 
   public componentDidUpdate(prevProps: IAppProps) {
     if (this.props.location.hash !== prevProps.location.hash) {
       // Route changed - update state
       this.setState(this.getStateFromPath(this.props.location));
-      console.log('Route changed: ', this.props.location.hash);
     }
   }
 
@@ -121,15 +116,16 @@ export class TodoApp extends React.Component<IAppProps, IAppState> {
     let main;
     const todos = this.model.todos;
 
+    // TODO replace with parsing config.filters[nowShowing].value into predicate
     const shownTodos = todos.filter((todo) => {
       switch (this.state.nowShowing) {
-        case ACTIVE_TODOS:
+        case 'active':
           return !todo.completed && !todo.archived;
-        case COMPLETED_TODOS:
+        case 'completed':
           return todo.completed && !todo.archived;
-        case ARCHIVED_TODOS:
+        case 'archived':
           return todo.archived;
-        case ALL_TODOS:
+        case 'all':
           return !todo.archived;
         default:
           return true;

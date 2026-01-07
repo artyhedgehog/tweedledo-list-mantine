@@ -1,6 +1,11 @@
 strings:
+  appName: ATD Хлебница
   title: TweedleDo Хлебница
+  description: TweedleDo Хлебница - список покупок от artyhedgehog
   searchBar.placeholder: Что нужно купить?
+  footer.archiveCompleted: Забрать купленное
+  todoItem.unarchive: Кончилось
+
 lists:
   - id: groceries
     label: Продукты
@@ -8,3 +13,31 @@ lists:
     label: Аптека
   - id: misc
     label: Разное
+
+states:
+  - id: stock
+    label: Запасы
+    filter: archived
+    hash: '#/archived'
+  - id: shop
+    label: В магазин!
+    filter: all
+    hash: '#/'
+  - id: buy
+    label: Купить
+    filter: active
+    hash: '#/active'
+  - id: cart
+    label: Корзина
+    filter: completed
+    hash: '#/completed'
+
+filters:
+  all:
+    value: archived eq false
+  active:
+    value: completed eq false and archived eq false
+  completed:
+    value: completed eq true and archived eq false
+  archived:
+    value: archived eq true

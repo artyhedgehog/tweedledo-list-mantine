@@ -11,16 +11,15 @@ export function HeaderSimple() {
   const location = useLocation();
   const active = location.pathname;
 
-  const items = lists.map((list) => (
-    <a
-      key={list}
-      href={path(list)}
-      className={classes.link}
-      data-active={active === list || undefined}
-    >
-      {label(list)}
-    </a>
-  ));
+  const items = lists.map((list) => {
+    const href = path(list);
+
+    return (
+      <a key={list} href={href} className={classes.link} data-active={active === href || undefined}>
+        {label(list)}
+      </a>
+    );
+  });
 
   return (
     <header className={classes.header}>

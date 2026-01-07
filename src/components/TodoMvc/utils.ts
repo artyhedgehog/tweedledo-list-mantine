@@ -18,10 +18,6 @@ class Utils {
     return uuid;
   }
 
-  public static pluralize(count: number, word: string) {
-    return count === 1 ? word : `${word}s`;
-  }
-
   public static getValue(namespace: string) {
     const store = localStorage.getItem(namespace);
 

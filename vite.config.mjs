@@ -29,6 +29,8 @@ export default defineConfig(({ mode }) => {
     },
   };
 
+  const { title, appName, description } = strings;
+
   return {
     plugins: [
       VitePWA({
@@ -41,9 +43,9 @@ export default defineConfig(({ mode }) => {
           'assets/pwa-512x512.png',
         ],
         manifest: {
-          short_name: 'ATD Shoplist',
-          name: 'TweedleDo Shopping List',
-          description: "artyhedgehog's TweedleDo Shopping List app",
+          short_name: appName,
+          name: title,
+          description,
           theme_color: '#033f63',
           icons: [
             {
@@ -77,7 +79,7 @@ export default defineConfig(({ mode }) => {
       createHtmlPlugin({
         inject: {
           data: {
-            title: strings.title,
+            title,
           },
         },
       }),

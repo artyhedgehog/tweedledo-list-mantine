@@ -32,7 +32,14 @@ body {
 }
 
 .footer {
-    box-sizing: content-box;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    width: 100%;
+}
+
+.filters {
+    position: inherit;
 }
 
 .unarchive {
