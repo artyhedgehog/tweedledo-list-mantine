@@ -34,7 +34,7 @@ export default defineConfig(({ mode }) => {
   return {
     plugins: [
       VitePWA({
-        registerType: 'prompt',
+        registerType: 'autoUpdate',
         injectRegister: 'auto',
         includeAssets: [
           'assets/favicon.ico',
