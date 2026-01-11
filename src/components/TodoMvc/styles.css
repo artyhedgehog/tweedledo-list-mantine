@@ -1,62 +1,78 @@
 body {
-    background-color: #033f63;
+  background-color: #033f63;
 }
 
 .todoapp {
-    margin: 0;
+  margin: 0;
+}
+
+.header .toggle-all,
+.header .toggle-all + label {
+  position: static;
+  align-self: flex-start;
+  margin-left: -8px;
+}
+
+.search-bar input {
+  font-size: 24px;
+  font-family: inherit;
+  font-weight: inherit;
+  line-height: 1.4em;
+  color: inherit;
+  -webkit-font-smoothing: antialiased;
 }
 
 .todo-list li .edit-item {
-    display: none;
-    position: absolute;
-    top: 0;
-    right: 60px;
-    bottom: 0;
-    width: 40px;
-    height: 40px;
-    margin: auto 0;
-    font-size: 30px;
-    color: #949494;
-    transition: color 0.2s ease-out;
+  display: none;
+  position: absolute;
+  top: 0;
+  right: 60px;
+  bottom: 0;
+  width: 40px;
+  height: 40px;
+  margin: auto 0;
+  font-size: 30px;
+  color: #949494;
+  transition: color 0.2s ease-out;
 }
 
 .todo-list li .edit-item::after {
-    content: '✏';
-    display: block;
-    height: 100%;
-    line-height: 1.1;
+  content: '✏';
+  display: block;
+  height: 100%;
+  line-height: 1.1;
 }
 
 .todo-list li:hover .edit-item {
-    display: block;
+  display: block;
 }
 
 .footer {
-    display: flex;
-    flex-direction: row;
-    justify-content: space-between;
-    width: 100%;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  width: 100%;
 }
 
 .filters {
-    position: inherit;
+  position: inherit;
 }
 
 .unarchive {
-    margin: auto 0;
-    top: 0;
-    bottom: 0;
-    left: 10px;
+  margin: auto 0;
+  top: 0;
+  bottom: 0;
+  left: 10px;
 }
 
 @media (max-width: 430px) {
-    .footer {
-        margin-bottom: 50px;
-    }
-    
-    .filters {
-        bottom: auto;
-        display: flex;
-        flex-direction: column;
-    }
+  .footer {
+    margin-bottom: 50px;
+  }
+
+  .filters {
+    bottom: auto;
+    display: flex;
+    flex-direction: column;
+  }
 }

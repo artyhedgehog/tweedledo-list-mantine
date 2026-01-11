@@ -65,4 +65,6 @@ export interface IAppProps {
 export interface IAppState {
   editing?: string;
   nowShowing?: string;
+  searching: string;
+  adding?: boolean;
 }

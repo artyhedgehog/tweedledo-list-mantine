@@ -10,6 +10,7 @@ import 'todomvc-app-css/index.css';
 import './styles.css';
 
 import config from 'virtual:vite-config';
+import { CloseButton, TextInput } from '@mantine/core';
 import { getListNamespace } from '@/utils/lists';
 import { t } from '@/utils/strings';
 
@@ -17,8 +18,6 @@ export class TodoApp extends React.Component<IAppProps, IAppState> {
   public state: IAppState;
 
   private model: ITodoModel;
-
-  private newFieldRef?: HTMLInputElement | null;
 
   constructor(props: IAppProps) {
     super(props);
@@ -29,6 +28,7 @@ export class TodoApp extends React.Component<IAppProps, IAppState> {
       // TODO Move default state somewhere without using specific key (`.all.`)
       nowShowing: 'all',
       editing: undefined,
+      searching: '',
     };
 
     this.model.subscribe(this.forceUpdate.bind(this));
@@ -41,6 +41,7 @@ export class TodoApp extends React.Component<IAppProps, IAppState> {
 
     return {
       nowShowing: state.filter,
+      searching: '',
     };
   }
 
@@ -62,17 +63,15 @@ export class TodoApp extends React.Component<IAppProps, IAppState> {
 
     event.preventDefault();
 
-    const node = this.newFieldRef;
-
-    if (!node) {
-      return;
-    }
-
-    const val = node.value.trim();
+    const val = this.state.searching.trim();
 
     if (val) {
       this.model.addTodo(val);
-      node.value = '';
+      this.setState({ adding: true });
+
+      setTimeout(() => {
+        this.setState({ searching: '', adding: false });
+      }, 400);
     }
   }
 
@@ -116,8 +115,12 @@ export class TodoApp extends React.Component<IAppProps, IAppState> {
     let main;
     const todos = this.model.todos;
 
-    // TODO replace with parsing config.filters[nowShowing].value into predicate
-    const shownTodos = todos.filter((todo) => {
+    const filter = (todo: ITodo) => {
+      if (this.state.searching) {
+        return todo.title.includes(this.state.searching);
+      }
+
+      // TODO replace with parsing config.filters[nowShowing].value into predicate
       switch (this.state.nowShowing) {
         case 'active':
           return !todo.completed && !todo.archived;
@@ -130,7 +133,8 @@ export class TodoApp extends React.Component<IAppProps, IAppState> {
         default:
           return true;
       }
-    });
+    };
+    const shownTodos = todos.filter(filter);
 
     const sortedTodos = shownTodos.sort((a, b) => {
       if (b.title === a.title) {
@@ -184,14 +188,6 @@ export class TodoApp extends React.Component<IAppProps, IAppState> {
     if (todos.length) {
       main = (
         <section className="main">
-          <input
-            id="toggle-all"
-            className="toggle-all"
-            type="checkbox"
-            onChange={(e) => this.toggleAll(e)}
-            checked={activeTodoCount === 0}
-          />
-          <label htmlFor="toggle-all">Mark all as complete</label>
           <ul className="todo-list">{todoItems}</ul>
         </section>
       );
@@ -200,13 +196,32 @@ export class TodoApp extends React.Component<IAppProps, IAppState> {
     return (
       <div>
         <div className="header">
-          <input
-            ref={(node) => {
-              this.newFieldRef = node;
-            }}
-            className="new-todo"
+          <TextInput
+            disabled={this.state.adding}
+            variant="unstyled"
+            className="search-bar"
             placeholder={t('searchBar.placeholder')}
             onKeyDown={(e) => this.handleNewTodoKeyDown(e)}
+            value={this.state.searching}
+            onChange={this.search.bind(this)}
+            leftSection={
+              <>
+                <input
+                  id="toggle-all"
+                  className="toggle-all"
+                  type="checkbox"
+                  onChange={(e) => this.toggleAll(e)}
+                  checked={activeTodoCount === 0}
+                />
+                <label htmlFor="toggle-all">Mark all as complete</label>
+              </>
+            }
+            rightSection={
+              this.state.searching ? (
+                <CloseButton onClick={this.search.bind(this, {} as any)} />
+              ) : undefined
+            }
+            size="xl"
             autoFocus
           />
         </div>
@@ -214,5 +229,12 @@ export class TodoApp extends React.Component<IAppProps, IAppState> {
         {footer}
       </div>
     );
+  }
+
+  public search(event: React.FormEvent) {
+    const input: any = event.currentTarget;
+    const searching = input?.value ?? '';
+
+    this.setState({ searching });
   }
 }
