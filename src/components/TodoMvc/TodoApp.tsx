@@ -19,6 +19,8 @@ export class TodoApp extends React.Component<IAppProps, IAppState> {
 
   private model: ITodoModel;
 
+  private newFieldRef = React.createRef<HTMLInputElement>();
+
   constructor(props: IAppProps) {
     super(props);
 
@@ -49,10 +51,14 @@ export class TodoApp extends React.Component<IAppProps, IAppState> {
     this.setState(this.getStateFromPath({ hash: '#/' }));
   }
 
-  public componentDidUpdate(prevProps: IAppProps) {
+  public componentDidUpdate(prevProps: IAppProps, prevState: IAppState) {
     if (this.props.location.hash !== prevProps.location.hash) {
       // Route changed - update state
       this.setState(this.getStateFromPath(this.props.location));
+    }
+
+    if (prevState.adding && !this.state.adding) {
+      this.newFieldRef.current?.focus();
     }
   }
 
@@ -67,11 +73,11 @@ export class TodoApp extends React.Component<IAppProps, IAppState> {
 
     if (val) {
       this.model.addTodo(val);
-      this.setState({ adding: true });
+      this.setState({ searching: val, adding: true });
 
       setTimeout(() => {
         this.setState({ searching: '', adding: false });
-      }, 400);
+      }, 300);
     }
   }
 
@@ -115,9 +121,11 @@ export class TodoApp extends React.Component<IAppProps, IAppState> {
     let main;
     const todos = this.model.todos;
 
+    const searchingLowercase = this.state.searching.toLowerCase();
+
     const filter = (todo: ITodo) => {
-      if (this.state.searching) {
-        return todo.title.includes(this.state.searching);
+      if (searchingLowercase) {
+        return todo.title?.toLowerCase()?.includes(searchingLowercase);
       }
 
       // TODO replace with parsing config.filters[nowShowing].value into predicate
@@ -197,6 +205,7 @@ export class TodoApp extends React.Component<IAppProps, IAppState> {
       <div>
         <div className="header">
           <TextInput
+            ref={this.newFieldRef}
             disabled={this.state.adding}
             variant="unstyled"
             className="search-bar"
