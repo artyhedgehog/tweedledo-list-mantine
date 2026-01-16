@@ -8,12 +8,13 @@ strings:
 
 lists:
   - id: groceries
-    hash: 
     label: Groceries
   - id: pharmacy
     label: Pharmacy
   - id: misc
     label: Misc
+  - id: tea
+    label: Tea
 
 states:
   - id: stock
