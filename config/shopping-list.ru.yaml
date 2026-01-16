@@ -5,6 +5,8 @@ strings:
   searchBar.placeholder: Что нужно купить?
   footer.archiveCompleted: Забрать купленное
   todoItem.unarchive: Кончилось
+  menu.data: Экспортировать/импортировать данные
+  menu.tweedledo: На сайт TweedleDo
 
 lists:
   - id: groceries
@@ -13,6 +15,13 @@ lists:
     label: Аптека
   - id: misc
     label: Разное
+  - id: tea
+    label: Чай
+  - id: books
+    label: Книги
+
+menu:
+  topLevelItemsLimit: 3
 
 states:
   - id: stock

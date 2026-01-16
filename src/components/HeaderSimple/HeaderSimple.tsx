@@ -1,25 +1,65 @@
-import { IconExternalLink, IconShoppingBagEdit } from '@tabler/icons-react';
+import {
+  IconArrowsLeftRight,
+  IconExternalLink,
+  IconList,
+  IconShoppingBagEdit,
+} from '@tabler/icons-react';
 import { useLocation } from 'react-router-dom';
-import { Burger, Container, Group, Menu } from '@mantine/core';
+import config from 'virtual:vite-config';
+import { Burger, Button, Container, Group, Menu } from '@mantine/core';
 import { useDisclosure } from '@mantine/hooks';
 import { label, lists, path } from '@/utils/lists';
+import { t } from '@/utils/strings';
 import classes from './HeaderSimple.module.css';
+
+const MENU_ICON_SIZE = 14;
+
+interface Item {
+  list: string;
+  label: string;
+  href: string;
+  isActive: boolean;
+}
 
 export function HeaderSimple() {
   const homeHref = path(lists[0]);
   const [opened, { toggle }] = useDisclosure(false);
   const location = useLocation();
-  const active = location.pathname;
+  const activeHref = location.pathname;
 
-  const items = lists.map((list) => {
-    const href = path(list);
+  const limit = config.menu?.topLevelItemsLimit;
+  const { topLevelItems, burgerItems } = lists.reduce(
+    (acc, list) => {
+      const href = path(list);
+      const isActive = activeHref === href;
+      const item = {
+        list,
+        href,
+        label: label(list),
+        isActive,
+      };
 
-    return (
-      <a key={list} href={href} className={classes.link} data-active={active === href || undefined}>
-        {label(list)}
-      </a>
-    );
-  });
+      const isFull = limit && acc.topLevelItems.length >= limit;
+
+      if (isFull && !isActive) {
+        acc.burgerItems.push(item);
+      } else {
+        if (isFull) {
+          const replacedItem = acc.topLevelItems.pop() as Item;
+
+          acc.burgerItems.unshift(replacedItem);
+        }
+
+        acc.topLevelItems.push(item);
+      }
+
+      return acc;
+    },
+    {
+      topLevelItems: [] as Item[],
+      burgerItems: [] as Item[],
+    }
+  );
 
   return (
     <header className={classes.header}>
@@ -28,23 +68,56 @@ export function HeaderSimple() {
           <IconShoppingBagEdit size={28} title="Shopping list" />
         </a>
 
-        <Group gap={5}>{items}</Group>
+        <Group gap={5}>
+          {topLevelItems.map(({ list, href, isActive, label }) => (
+            <Button
+              variant="transparent"
+              leftSection={<IconList size={MENU_ICON_SIZE} />}
+              component="a"
+              key={list}
+              href={href}
+              className={classes.link}
+              data-active={isActive || undefined}
+            >
+              {label}
+            </Button>
+          ))}
+        </Group>
 
         <Menu opened={opened} onChange={toggle} shadow="md" width={200}>
           <Menu.Target>
             <Burger opened={opened} onClick={toggle} size="sm" />
           </Menu.Target>
           <Menu.Dropdown>
+            {burgerItems.map(({ list, href, label }) => (
+              <Menu.Item
+                key={list}
+                leftSection={<IconList size={MENU_ICON_SIZE} />}
+                component="a"
+                href={href}
+              >
+                {label}
+              </Menu.Item>
+            ))}
+
+            {burgerItems.length && <Menu.Divider />}
+
             <Menu.Item
-              leftSection={<IconExternalLink size={14} />}
+              leftSection={<IconArrowsLeftRight size={MENU_ICON_SIZE} />}
+              component="a"
+              href="/data"
+              target="__blank"
+            >
+              {t('menu.data')}
+            </Menu.Item>
+
+            <Menu.Item
+              leftSection={<IconExternalLink size={MENU_ICON_SIZE} />}
               component="a"
               href="https://tweedledo.online"
               target="__blank"
             >
-              TweedleDo Home
-            </Menu.Item>
-            <Menu.Item component="a" href="/data" target="__blank">
-              Data export/import
+              {t('menu.tweedledo')}
             </Menu.Item>
           </Menu.Dropdown>
         </Menu>

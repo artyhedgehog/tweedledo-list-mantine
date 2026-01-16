@@ -5,6 +5,8 @@ strings:
   searchBar.placeholder: What do I need to buy?
   footer.archiveCompleted: Check out
   todoItem.unarchive: Out of stock
+  menu.data: Data export/import
+  menu.tweedledo: To TweedleDo website
 
 lists:
   - id: groceries
@@ -15,6 +17,11 @@ lists:
     label: Misc
   - id: tea
     label: Tea
+  - id: books
+    label: Books
+
+menu:
+  topLevelItemsLimit: 3
 
 states:
   - id: stock
