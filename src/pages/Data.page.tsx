@@ -1,6 +1,7 @@
 import { useRef } from 'react';
+import { IconBackspace, IconReload } from '@tabler/icons-react';
 import * as yaml from 'yaml';
-import { Anchor, AppShell, Button, Center, Group, Textarea } from '@mantine/core';
+import { Anchor, AppShell, Button, Center, CopyButton, Group, Textarea } from '@mantine/core';
 import { useForm } from '@mantine/form';
 import { notifications } from '@mantine/notifications';
 import { HeaderSimple } from '@/components/HeaderSimple/HeaderSimple';
@@ -13,7 +14,7 @@ export function DataPage() {
   >({ value: undefined, parsed: undefined });
 
   const form = useForm({
-    mode: 'uncontrolled',
+    mode: 'controlled',
     initialValues: {
       data: yaml.stringify(Utils.getAllData(lists)),
     },
@@ -40,28 +41,70 @@ export function DataPage() {
     }
   };
 
-  const handleLoad = () => {
-    form.setValues({ data: yaml.stringify(Utils.getAllData(lists)) });
+  const handleSave = (data: Record<string, unknown>) => {
+    try {
+      Utils.saveAllData(data);
+      form.resetTouched();
+      form.resetDirty();
+      notifications.show({ message: 'Data from the YAML is imported to the app' });
+    } catch (e: any) {
+      const message = e.message ?? 'Unknown error';
+      form.setErrors({ data: message });
+      notifications.show({ message, color: 'red' });
+    }
   };
+
+  const handleLoad = () => {
+    form.reset();
+    form.initialize({ data: yaml.stringify(Utils.getAllData(lists)) });
+  };
+
+  const handleClear = () => {
+    form.setValues({ data: '' });
+  };
+
+  const dataInputProps = form.getInputProps('data');
 
   return (
     <AppShell padding="md" header={{ height: 36 }}>
       <HeaderSimple />
       <AppShell.Main>
-        <form onSubmit={form.onSubmit(Utils.saveAllData, handleError)}>
+        <form onSubmit={form.onSubmit(handleSave, handleError)}>
           <Textarea
             placeholder="Enter data YAML to use"
             label="Data YAML"
             autosize
+            resize="vertical"
             minRows={3}
+            maxRows={16}
             key={form.key('data')}
-            {...form.getInputProps('data')}
+            {...dataInputProps}
           />
-          <Group>
-            <Button type="submit" mt="sm">
+          <Group gap={5} mt={5}>
+            <CopyButton value={dataInputProps.value}>
+              {({ copied, copy }) => (
+                <Button
+                  color={copied ? 'teal' : 'blue'}
+                  onClick={copy}
+                  disabled={!dataInputProps.value}
+                >
+                  {copied ? 'Copied!' : 'Copy YAML'}
+                </Button>
+              )}
+            </CopyButton>
+
+            <Button
+              color="red"
+              type="submit"
+              disabled={!form.isDirty('data') || !dataInputProps.value}
+              title="This will replace current app data with the YAML field content. All current app data will be lost."
+            >
               Save
             </Button>
-            <Button type="button" mt="sm" onClick={handleLoad}>
+            <Button type="button" onClick={handleClear} leftSection={<IconBackspace />}>
+              Clear
+            </Button>
+            <Button type="button" onClick={handleLoad} leftSection={<IconReload />}>
               Load
             </Button>
           </Group>

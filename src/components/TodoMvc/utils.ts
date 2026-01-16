@@ -49,8 +49,8 @@ class Utils {
     return Object.fromEntries(entries);
   }
 
-  public static saveAllData<K extends string>(data: Record<K, unknown>) {
-    const entries = Object.entries(data);
+  public static saveAllData<K extends string>(data?: Record<K, unknown>) {
+    const entries = Object.entries(data || {});
 
     entries.forEach(([namespace, value]) => {
       Utils.setValue(namespace, value);

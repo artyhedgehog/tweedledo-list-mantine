@@ -106,7 +106,6 @@ export function HeaderSimple() {
               leftSection={<IconArrowsLeftRight size={MENU_ICON_SIZE} />}
               component="a"
               href="/data"
-              target="__blank"
             >
               {t('menu.data')}
             </Menu.Item>
