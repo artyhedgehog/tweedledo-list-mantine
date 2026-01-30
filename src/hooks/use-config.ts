@@ -1,11 +1,31 @@
 import { useState } from 'react';
 import configFromVite from 'virtual:vite-config';
 import { IAppConfig } from '@/components/TodoMvc/interfaces';
+import { Utils } from '@/components/TodoMvc/utils';
+import { addPrefixIfNonEmpty } from '@/utils/lists';
 
-export function useConfig(): { config: IAppConfig } {
-  // TODO validate;
+const NAMESPACE = 'config';
 
-  const [config] = useState(configFromVite as IAppConfig);
+export function useConfig(): {
+  config: IAppConfig;
+  reloadConfigFromStore: () => void;
+  configNamespace: string;
+} {
+  const storePrefix = configFromVite.storePrefix || '';
+  const namespace = addPrefixIfNonEmpty(NAMESPACE, storePrefix);
 
-  return { config };
+  const initializeConfig = () => {
+    const { storePrefix: _storePrefix, ...configData } = Utils.getValue(namespace, {});
+
+    return {
+      ...configFromVite,
+      ...configData,
+    };
+  };
+
+  const [config, setConfig] = useState(initializeConfig());
+
+  const reloadConfigFromStore = () => setConfig(initializeConfig());
+
+  return { config, configNamespace: NAMESPACE, reloadConfigFromStore };
 }

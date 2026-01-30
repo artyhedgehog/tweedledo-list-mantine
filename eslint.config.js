@@ -9,7 +9,9 @@ export default defineConfig(
   { ignores: ['**/*.{mjs,cjs,js,d.ts,d.mts}'] },
   {
     files: ['**/*.story.tsx'],
-    rules: { 'no-console': 'off' },
+    rules: {
+      'no-console': 'off',
+    },
   },
   {
     languageOptions: {
@@ -17,6 +19,23 @@ export default defineConfig(
         tsconfigRootDir: process.cwd(),
         project: ['./tsconfig.json'],
       },
+    },
+  },
+  {
+    files: ['**/*.{mjs,cjs,js,d.ts,d.mts}'],
+    rules: {
+      '@typescript-eslint/no-unused-vars': [
+        2,
+        {
+          args: 'all',
+          argsIgnorePattern: '^_',
+          caughtErrors: 'none',
+          caughtErrorsIgnorePattern: '^_',
+          destructuredArrayIgnorePattern: '^_',
+          varsIgnorePattern: '^_',
+          ignoreRestSiblings: true,
+        },
+      ],
     },
   }
 );

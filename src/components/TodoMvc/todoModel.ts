@@ -18,7 +18,7 @@ class TodoModel implements ITodoModel {
 
   constructor(key: string) {
     this.key = key;
-    this.todos = Utils.store(key);
+    this.todos = Utils.getValue(key);
     this.onChanges = [];
   }
 
@@ -27,7 +27,7 @@ class TodoModel implements ITodoModel {
   }
 
   public inform() {
-    Utils.store(this.key, this.todos);
+    Utils.setValue(this.key, this.todos);
     this.onChanges.forEach((cb) => {
       cb();
     });

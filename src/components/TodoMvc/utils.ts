@@ -1,5 +1,5 @@
-import { getListNamespace } from '@/utils/lists';
-import { ListName } from './interfaces';
+import { addPrefixIfNonEmpty, getListNamespace } from '@/utils/lists';
+import { IAppConfig, ListName } from './interfaces';
 
 class Utils {
   public static uuid(): string {
@@ -18,42 +18,47 @@ class Utils {
     return uuid;
   }
 
-  public static getValue(namespace: string) {
+  public static getValue(namespace: string, defaultValue: any = []) {
     const store = localStorage.getItem(namespace);
 
-    return (store && JSON.parse(store)) || [];
+    return (store && JSON.parse(store)) || defaultValue;
   }
 
   public static setValue(namespace: string, value: unknown) {
     localStorage.setItem(namespace, JSON.stringify(value));
   }
 
-  /**
-   * @todo Remove
-   * @deprecated Use setValue and getValue
-   */
-  public static store(namespace: string, data?: any) {
-    if (data) {
-      return Utils.setValue(namespace, data);
-    }
-
-    return Utils.getValue(namespace);
-  }
-
-  public static getAllData<K extends string>(lists: ListName[]): Record<K, unknown> {
+  public static getAllData<K extends string>(
+    lists: ListName[],
+    config: IAppConfig,
+    configNamespace: string
+  ): Record<K, unknown> {
     const entries = lists.map((list: ListName) => {
       const namespace = getListNamespace(list);
-      return [namespace, Utils.getValue(namespace)];
+      const listData = Utils.getValue(addPrefixIfNonEmpty(namespace, config.storePrefix));
+
+      return [namespace, listData];
     });
+
+    const { storePrefix, ...settings } = config;
+
+    entries.unshift([configNamespace, settings]);
 
     return Object.fromEntries(entries);
   }
 
-  public static saveAllData<K extends string>(data?: Record<K, unknown>) {
+  public static saveAllData<K extends string>(
+    data: Record<K, unknown>,
+    config: IAppConfig,
+    configNamespace: string
+  ) {
     const entries = Object.entries(data || {});
 
     entries.forEach(([namespace, value]) => {
-      Utils.setValue(namespace, value);
+      if (namespace === configNamespace) {
+        delete (value as IAppConfig).storePrefix;
+      }
+      Utils.setValue(addPrefixIfNonEmpty(namespace, config.storePrefix), value);
     });
   }
 

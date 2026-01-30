@@ -72,7 +72,7 @@ export interface IAppState {
   adding?: boolean;
 }
 
-export interface IAppConfig {
+export interface AppSettings {
   strings: Record<string, string>;
   lists: Array<{ id: ListName; label: string }>;
   menu: {
@@ -90,4 +90,8 @@ export interface IAppConfig {
       value: string;
     }
   >;
+}
+
+export interface IAppConfig extends AppSettings {
+  storePrefix?: string;
 }

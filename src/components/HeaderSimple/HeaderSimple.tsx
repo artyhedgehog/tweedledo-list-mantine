@@ -104,7 +104,7 @@ export function HeaderSimple() {
               </Menu.Item>
             ))}
 
-            {burgerItems.length && <Menu.Divider />}
+            {burgerItems.length > 0 && <Menu.Divider />}
 
             <Menu.Item
               leftSection={<IconArrowsLeftRight size={MENU_ICON_SIZE} />}

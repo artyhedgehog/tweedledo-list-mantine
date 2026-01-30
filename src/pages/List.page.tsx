@@ -1,5 +1,6 @@
 import { useLocation } from 'react-router-dom';
-import { Anchor, AppShell, Center } from '@mantine/core';
+import { AppShell } from '@mantine/core';
+import { FooterSimple } from '@/components/FooterSimple';
 import { HeaderSimple } from '@/components/HeaderSimple/HeaderSimple';
 import { ListName } from '@/components/TodoMvc/interfaces';
 import { TodoApp } from '@/components/TodoMvc/TodoApp';
@@ -18,12 +19,7 @@ export function ListPage({ list }: { list: ListName }) {
         <TodoApp location={location} list={list} config={config} t={t} />
       </AppShell.Main>
 
-      <AppShell.Footer>
-        <Center>
-          Created by <Anchor href="https://github.com/artyhedgehog">@artyhedgehog</Anchor>
-          in 2025.
-        </Center>
-      </AppShell.Footer>
+      <FooterSimple />
     </AppShell>
   );
 }

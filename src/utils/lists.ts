@@ -25,4 +25,12 @@ export function useLists() {
 
 export const path = (list: ListName) => `/${list}`;
 
+export const addPrefixIfNonEmpty = (key: string, storePrefix: string | undefined) => {
+  if (storePrefix) {
+    return `${storePrefix}:${key}`;
+  }
+
+  return key;
+};
+
 export const getListNamespace = (list: ListName) => `shopping-list:${list}`;

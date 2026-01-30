@@ -1,15 +1,18 @@
 import { useRef } from 'react';
 import { IconBackspace, IconReload } from '@tabler/icons-react';
 import * as yaml from 'yaml';
-import { Anchor, AppShell, Button, Center, CopyButton, Group, Textarea } from '@mantine/core';
+import { AppShell, Button, CopyButton, Group, Textarea } from '@mantine/core';
 import { useForm } from '@mantine/form';
 import { notifications } from '@mantine/notifications';
+import { FooterSimple } from '@/components/FooterSimple';
 import { HeaderSimple } from '@/components/HeaderSimple/HeaderSimple';
 import { Utils } from '@/components/TodoMvc/utils';
+import { useConfig } from '@/hooks/use-config';
 import { useLists } from '@/utils/lists';
 
 export function DataPage() {
   const { lists } = useLists();
+  const { config, configNamespace, reloadConfigFromStore } = useConfig();
 
   const yamlRef = useRef<
     { value: string; parsed: unknown } | { value: undefined; parsed: undefined }
@@ -18,7 +21,7 @@ export function DataPage() {
   const form = useForm({
     mode: 'controlled',
     initialValues: {
-      data: yaml.stringify(Utils.getAllData(lists)),
+      data: yaml.stringify(Utils.getAllData(lists, config, configNamespace)),
     },
 
     validate: {
@@ -45,7 +48,8 @@ export function DataPage() {
 
   const handleSave = (data: Record<string, unknown>) => {
     try {
-      Utils.saveAllData(data);
+      Utils.saveAllData(data || {}, config, configNamespace);
+      reloadConfigFromStore();
       form.resetTouched();
       form.resetDirty();
       notifications.show({ message: 'Data from the YAML is imported to the app' });
@@ -58,7 +62,7 @@ export function DataPage() {
 
   const handleLoad = () => {
     form.reset();
-    form.initialize({ data: yaml.stringify(Utils.getAllData(lists)) });
+    form.initialize({ data: yaml.stringify(Utils.getAllData(lists, config, configNamespace)) });
   };
 
   const handleClear = () => {
@@ -113,13 +117,7 @@ export function DataPage() {
         </form>
       </AppShell.Main>
 
-      {/* TODO: Refactor into <FooterSimple /> */}
-      <AppShell.Footer>
-        <Center>
-          Created by <Anchor href="https://github.com/artyhedgehog">@artyhedgehog</Anchor>
-          in 2025.
-        </Center>
-      </AppShell.Footer>
+      <FooterSimple />
     </AppShell>
   );
 }
