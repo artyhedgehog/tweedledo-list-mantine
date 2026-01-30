@@ -5,11 +5,11 @@ import {
   IconShoppingBagEdit,
 } from '@tabler/icons-react';
 import { useLocation } from 'react-router-dom';
-import config from 'virtual:vite-config';
 import { Burger, Button, Container, Group, Menu } from '@mantine/core';
 import { useDisclosure } from '@mantine/hooks';
-import { label, lists, path } from '@/utils/lists';
-import { t } from '@/utils/strings';
+import { useConfig } from '@/hooks/use-config';
+import { path, useLists } from '@/utils/lists';
+import { useI18n } from '@/utils/strings';
 import classes from './HeaderSimple.module.css';
 
 const MENU_ICON_SIZE = 14;
@@ -22,6 +22,10 @@ interface Item {
 }
 
 export function HeaderSimple() {
+  const { config } = useConfig();
+  const { lists, label } = useLists();
+  const { t } = useI18n();
+
   const homeHref = path(lists[0]);
   const [opened, { toggle }] = useDisclosure(false);
   const location = useLocation();

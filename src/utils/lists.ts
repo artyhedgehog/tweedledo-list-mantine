@@ -1,23 +1,27 @@
-import config from 'virtual:vite-config';
 import { ListName } from '@/components/TodoMvc/interfaces';
+import { useConfig } from '@/hooks/use-config';
 
-const listsConfig: Array<{ id: ListName; label: string }> = config.lists;
+export function useLists() {
+  const { config } = useConfig();
 
-const { lists, labels } = listsConfig.reduce(
-  (acc, { id, label }) => {
-    acc.lists.push(id);
-    acc.labels[id] = label;
+  const listsConfig: Array<{ id: ListName; label: string }> = config.lists;
 
-    return acc;
-  },
-  { lists: [] as ListName[], labels: {} as Record<ListName, string> }
-);
+  const { lists, labels } = listsConfig.reduce(
+    (acc, { id, label }) => {
+      acc.lists.push(id);
+      acc.labels[id] = label;
 
-export { lists };
+      return acc;
+    },
+    { lists: [] as ListName[], labels: {} as Record<ListName, string> }
+  );
 
-export const label = (list: ListName): string => {
-  return labels[list];
-};
+  const label = (list: ListName): string => {
+    return labels[list];
+  };
+
+  return { lists, label };
+}
 
 export const path = (list: ListName) => `/${list}`;
 

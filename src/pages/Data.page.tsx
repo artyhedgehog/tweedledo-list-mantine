@@ -6,9 +6,11 @@ import { useForm } from '@mantine/form';
 import { notifications } from '@mantine/notifications';
 import { HeaderSimple } from '@/components/HeaderSimple/HeaderSimple';
 import { Utils } from '@/components/TodoMvc/utils';
-import { lists } from '@/utils/lists';
+import { useLists } from '@/utils/lists';
 
 export function DataPage() {
+  const { lists } = useLists();
+
   const yamlRef = useRef<
     { value: string; parsed: unknown } | { value: undefined; parsed: undefined }
   >({ value: undefined, parsed: undefined });

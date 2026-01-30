@@ -6,6 +6,7 @@ export interface ITodo {
 }
 
 export interface ITodoItemProps {
+  t: (id: string) => string;
   key: string;
   todo: ITodo;
   editing?: boolean;
@@ -58,8 +59,10 @@ export interface ILocation {
 export type ListName = 'groceries' | 'pharmacy' | 'misc';
 
 export interface IAppProps {
+  config: IAppConfig;
   location: ILocation;
   list: ListName;
+  t: (id: string) => string;
 }
 
 export interface IAppState {
@@ -67,4 +70,24 @@ export interface IAppState {
   nowShowing?: string;
   searching: string;
   adding?: boolean;
+}
+
+export interface IAppConfig {
+  strings: Record<string, string>;
+  lists: Array<{ id: ListName; label: string }>;
+  menu: {
+    topLevelItemsLimit: number;
+  };
+  states: Array<{
+    id: string;
+    label: string;
+    filter: string;
+    hash: string;
+  }>;
+  filters: Record<
+    string,
+    {
+      value: string;
+    }
+  >;
 }

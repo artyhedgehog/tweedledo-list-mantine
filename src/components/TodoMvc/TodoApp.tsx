@@ -9,10 +9,8 @@ import 'todomvc-common/base.css';
 import 'todomvc-app-css/index.css';
 import './styles.css';
 
-import config from 'virtual:vite-config';
 import { CloseButton, TextInput } from '@mantine/core';
 import { getListNamespace } from '@/utils/lists';
-import { t } from '@/utils/strings';
 
 export class TodoApp extends React.Component<IAppProps, IAppState> {
   public state: IAppState;
@@ -37,12 +35,12 @@ export class TodoApp extends React.Component<IAppProps, IAppState> {
   }
 
   private getStateFromPath(location: { hash: string }): IAppState {
-    const state = config.states.find(({ hash }: { hash: string }) => {
+    const state = this.props.config.states.find(({ hash }: { hash: string }) => {
       return hash === location.hash;
     });
 
     return {
-      nowShowing: state.filter,
+      nowShowing: state?.filter,
       searching: '',
     };
   }
@@ -128,7 +126,7 @@ export class TodoApp extends React.Component<IAppProps, IAppState> {
         return todo.title?.toLowerCase()?.includes(searchingLowercase);
       }
 
-      // TODO replace with parsing config.filters[nowShowing].value into predicate
+      // TODO replace with parsing this.props.config.filters[nowShowing].value into predicate
       switch (this.state.nowShowing) {
         case 'active':
           return !todo.completed && !todo.archived;
@@ -159,6 +157,7 @@ export class TodoApp extends React.Component<IAppProps, IAppState> {
     const todoItems = sortedTodos.map((todo) => {
       return (
         <TodoItem
+          t={this.props.t}
           key={todo.id}
           todo={todo}
           onToggle={this.toggle.bind(this, todo)}
@@ -209,7 +208,7 @@ export class TodoApp extends React.Component<IAppProps, IAppState> {
             disabled={this.state.adding}
             variant="unstyled"
             className="search-bar"
-            placeholder={t('searchBar.placeholder')}
+            placeholder={this.props.t('searchBar.placeholder')}
             onKeyDown={(e) => this.handleNewTodoKeyDown(e)}
             value={this.state.searching}
             onChange={this.search.bind(this)}

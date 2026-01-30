@@ -7,7 +7,6 @@ import * as React from 'react';
 import { IconTextPlus } from '@tabler/icons-react';
 import classNames from 'classnames';
 import { ActionIcon } from '@mantine/core';
-import { t } from '@/utils/strings';
 import { ENTER_KEY, ESCAPE_KEY } from './constants';
 import { ITodoItemProps, ITodoItemState } from './interfaces';
 
@@ -100,7 +99,7 @@ class TodoItem extends React.Component<ITodoItemProps, ITodoItemState> {
               onClick={this.props.onUnarchive}
               display="block"
               pos="absolute"
-              title={t('todoItem.unarchive')}
+              title={this.props.t('todoItem.unarchive')}
             >
               <IconTextPlus />
             </ActionIcon>
