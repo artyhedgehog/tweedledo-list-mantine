@@ -10,14 +10,22 @@ strings:
 
 lists:
   - id: groceries
-    label: Продукты
+    icon: IconApple
+    label: Еда
   - id: pharmacy
+    icon: IconPill
     label: Аптека
   - id: misc
+    icon: IconTools
     label: Разное
   - id: tea
+    icon: IconCoffee # =(
     label: Чай
+  - id: pets
+    icon: IconCat
+    label: Зоо
   - id: books
+    icon: IconBooks
     label: Книги
 
 menu:

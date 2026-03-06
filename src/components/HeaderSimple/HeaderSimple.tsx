@@ -1,9 +1,5 @@
-import {
-  IconArrowsLeftRight,
-  IconExternalLink,
-  IconList,
-  IconShoppingBagEdit,
-} from '@tabler/icons-react';
+import { ReactNode } from 'react';
+import * as icons from '@tabler/icons-react';
 import { useLocation } from 'react-router-dom';
 import { Burger, Button, Container, Group, Menu } from '@mantine/core';
 import { useDisclosure } from '@mantine/hooks';
@@ -14,33 +10,39 @@ import classes from './HeaderSimple.module.css';
 
 const MENU_ICON_SIZE = 14;
 
+const { IconArrowsLeftRight, IconExternalLink, IconList, IconShoppingBagEdit } = icons;
+
 interface Item {
   list: string;
   label: string;
+  icon: ReactNode;
   href: string;
   isActive: boolean;
 }
 
 export function HeaderSimple() {
   const { config } = useConfig();
-  const { lists, label } = useLists();
+  const { listConfigs } = useLists();
   const { t } = useI18n();
 
-  const homeHref = path(lists[0]);
+  const homeHref = path(listConfigs[0].id);
   const [opened, { toggle }] = useDisclosure(false);
   const location = useLocation();
   const activeHref = location.pathname;
 
   const limit = config.menu?.topLevelItemsLimit;
-  const { topLevelItems, burgerItems } = lists.reduce(
-    (acc, list) => {
+  const { topLevelItems, burgerItems } = listConfigs.reduce(
+    (acc, { id: list, label, icon }) => {
+      const CustomIcon = icon && icons[icon];
+      const IconComponent = (CustomIcon || IconList) as React.ComponentType<icons.IconProps>;
       const href = path(list);
       const isActive = activeHref === href;
       const item = {
         list,
         href,
-        label: label(list),
+        label,
         isActive,
+        icon: <IconComponent size={MENU_ICON_SIZE} />,
       };
 
       const isFull = limit && acc.topLevelItems.length >= limit;
@@ -73,10 +75,10 @@ export function HeaderSimple() {
         </a>
 
         <Group gap={5}>
-          {topLevelItems.map(({ list, href, isActive, label }) => (
+          {topLevelItems.map(({ list, href, isActive, label, icon }) => (
             <Button
               variant="transparent"
-              leftSection={<IconList size={MENU_ICON_SIZE} />}
+              leftSection={icon}
               component="a"
               key={list}
               href={href}
@@ -93,13 +95,8 @@ export function HeaderSimple() {
             <Burger opened={opened} onClick={toggle} size="sm" />
           </Menu.Target>
           <Menu.Dropdown>
-            {burgerItems.map(({ list, href, label }) => (
-              <Menu.Item
-                key={list}
-                leftSection={<IconList size={MENU_ICON_SIZE} />}
-                component="a"
-                href={href}
-              >
+            {burgerItems.map(({ list, href, label, icon }) => (
+              <Menu.Item key={list} leftSection={icon} component="a" href={href}>
                 {label}
               </Menu.Item>
             ))}

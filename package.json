@@ -5,6 +5,7 @@
   "version": "0.0.0",
   "scripts": {
     "dev": "vite",
+    "dev:clean": "vite --force",
     "build": "tsc && vite build",
     "build:clean": "rm -rf ./dist && npm run build",
     "preview": "vite preview",

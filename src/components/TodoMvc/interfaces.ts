@@ -1,3 +1,5 @@
+import * as icons from '@tabler/icons-react';
+
 export interface ITodo {
   id: string;
   title: string;
@@ -72,9 +74,17 @@ export interface IAppState {
   adding?: boolean;
 }
 
+export type IconComponentName = keyof typeof icons;
+
+export interface ListConfig {
+  id: ListName;
+  icon?: IconComponentName;
+  label: string;
+}
+
 export interface AppSettings {
   strings: Record<string, string>;
-  lists: Array<{ id: ListName; label: string }>;
+  lists: ListConfig[];
   menu: {
     topLevelItemsLimit: number;
   };

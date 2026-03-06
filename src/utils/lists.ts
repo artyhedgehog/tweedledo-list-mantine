@@ -1,12 +1,12 @@
-import { ListName } from '@/components/TodoMvc/interfaces';
+import { ListConfig, ListName } from '@/components/TodoMvc/interfaces';
 import { useConfig } from '@/hooks/use-config';
 
 export function useLists() {
   const { config } = useConfig();
 
-  const listsConfig: Array<{ id: ListName; label: string }> = config.lists;
+  const listConfigs: Array<ListConfig> = config.lists;
 
-  const { lists, labels } = listsConfig.reduce(
+  const { lists, labels } = listConfigs.reduce(
     (acc, { id, label }) => {
       acc.lists.push(id);
       acc.labels[id] = label;
@@ -20,7 +20,7 @@ export function useLists() {
     return labels[list];
   };
 
-  return { lists, label };
+  return { lists, label, listConfigs };
 }
 
 export const path = (list: ListName) => `/${list}`;
