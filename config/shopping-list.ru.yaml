@@ -28,9 +28,6 @@ lists:
     icon: IconBooks
     label: Книги
 
-menu:
-  topLevelItemsLimit: 3
-
 states:
   - id: stock
     label: Запасы

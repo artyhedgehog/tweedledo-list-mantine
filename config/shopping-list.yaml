@@ -28,9 +28,6 @@ lists:
     icon: IconBooks
     label: Books
 
-menu:
-  topLevelItemsLimit: 3
-
 states:
   - id: stock
     label: Stock

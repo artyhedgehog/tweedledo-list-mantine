@@ -1,20 +1,21 @@
 import { ReactNode } from 'react';
 import * as icons from '@tabler/icons-react';
 import { useLocation } from 'react-router-dom';
-import { Burger, Button, Container, Group, Menu } from '@mantine/core';
+import { ActionIcon, Burger, Button, Container, Flex, Menu, ScrollArea } from '@mantine/core';
 import { useDisclosure } from '@mantine/hooks';
 import { useConfig } from '@/hooks/use-config';
 import { path, useLists } from '@/utils/lists';
 import { useI18n } from '@/utils/strings';
 import classes from './HeaderSimple.module.css';
 
-const MENU_ICON_SIZE = 14;
+const MENU_ICON_SIZE = 20;
 
 const { IconArrowsLeftRight, IconExternalLink, IconList, IconShoppingBagEdit } = icons;
 
 interface Item {
   list: string;
   label: string;
+  title: string;
   icon: ReactNode;
   href: string;
   isActive: boolean;
@@ -40,7 +41,8 @@ export function HeaderSimple() {
       const item = {
         list,
         href,
-        label,
+        label: CustomIcon && !isActive ? '' : label,
+        title: label,
         isActive,
         icon: <IconComponent size={MENU_ICON_SIZE} />,
       };
@@ -74,21 +76,42 @@ export function HeaderSimple() {
           <IconShoppingBagEdit size={28} title="Shopping list" />
         </a>
 
-        <Group gap={5}>
-          {topLevelItems.map(({ list, href, isActive, label, icon }) => (
-            <Button
-              variant="transparent"
-              leftSection={icon}
-              component="a"
-              key={list}
-              href={href}
-              className={classes.link}
-              data-active={isActive || undefined}
-            >
-              {label}
-            </Button>
-          ))}
-        </Group>
+        <ScrollArea w="100%" scrollbars="x" type="never" className={classes.scroll}>
+          <Flex align="center" wrap="nowrap" justify="flex-start">
+            {topLevelItems.map(({ list, href, isActive, label, icon, title }) => {
+              if (!label) {
+                return (
+                  <ActionIcon
+                    variant="transparent"
+                    component="a"
+                    key={list}
+                    href={href}
+                    data-active={isActive || undefined}
+                    title={title}
+                    aria-label={title}
+                  >
+                    {icon}
+                  </ActionIcon>
+                );
+              }
+
+              return (
+                <Button
+                  variant="transparent"
+                  leftSection={icon}
+                  component="a"
+                  key={list}
+                  href={href}
+                  className={classes.link}
+                  data-active={isActive || undefined}
+                  title={title}
+                >
+                  {label}
+                </Button>
+              );
+            })}
+          </Flex>
+        </ScrollArea>
 
         <Menu opened={opened} onChange={toggle} shadow="md" width={200}>
           <Menu.Target>

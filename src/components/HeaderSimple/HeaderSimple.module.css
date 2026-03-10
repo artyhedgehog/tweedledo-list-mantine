@@ -11,8 +11,12 @@
   align-items: center;
 }
 
+.scroll {
+ padding-left: 12px;
+}
+
 .link {
-  display: block;
+  flex-shrink: 0;
   line-height: 1;
   padding: 8px 12px;
   border-radius: var(--mantine-radius-sm);
