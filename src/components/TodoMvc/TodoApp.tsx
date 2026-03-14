@@ -2,7 +2,6 @@ import * as React from 'react';
 import { ENTER_KEY } from './constants';
 import { TodoFooter } from './footer';
 import { IAppProps, IAppState, ITodo, ITodoModel } from './interfaces';
-import { TodoItem } from './todoItem';
 import { TodoModel } from './todoModel';
 
 import 'todomvc-common/base.css';
@@ -11,6 +10,7 @@ import './styles.css';
 
 import { CloseButton, TextInput } from '@mantine/core';
 import { addPrefixIfNonEmpty, getListNamespace } from '@/utils/lists';
+import { TodoItem } from '../TodoItem';
 
 export class TodoApp extends React.Component<IAppProps, IAppState> {
   public state: IAppState;
