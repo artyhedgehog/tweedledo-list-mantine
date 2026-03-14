@@ -5,6 +5,8 @@ strings:
   searchBar.placeholder: Что нужно купить?
   footer.archiveCompleted: Забрать купленное
   todoItem.unarchive: Кончилось
+  todoItem.check: Купил
+  todoItem.uncheck: Отмена
   menu.data: Экспортировать/импортировать данные
   menu.tweedledo: На сайт TweedleDo
 

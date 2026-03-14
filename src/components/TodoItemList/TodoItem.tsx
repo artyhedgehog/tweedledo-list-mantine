@@ -1,9 +1,8 @@
 import { useEffect, useRef, useState } from 'react';
-import { IconTextPlus } from '@tabler/icons-react';
 import classNames from 'classnames';
-import { ActionIcon } from '@mantine/core';
 import { ENTER_KEY, ESCAPE_KEY } from '../TodoMvc/constants';
 import { ITodoItemProps } from '../TodoMvc/interfaces';
+import { TodoItemIcon } from './TodoItemIcon';
 
 export function TodoItem(props: ITodoItemProps) {
   const editFieldRef = useRef<HTMLInputElement | null>(null);
@@ -68,24 +67,12 @@ export function TodoItem(props: ITodoItemProps) {
       })}
     >
       <div className="view">
-        {props.todo.archived ? (
-          <ActionIcon
-            className="unarchive"
-            onClick={props.onUnarchive}
-            display="block"
-            pos="absolute"
-            title={props.t('todoItem.unarchive')}
-          >
-            <IconTextPlus />
-          </ActionIcon>
-        ) : (
-          <input
-            className="toggle"
-            type="checkbox"
-            checked={props.todo.completed}
-            onChange={props.onToggle}
-          />
-        )}
+        <TodoItemIcon
+          archived={props.todo.archived ?? false}
+          completed={props.todo.completed}
+          onToggle={props.onToggle}
+          onUnarchive={props.onUnarchive}
+        />
 
         <label onDoubleClick={() => handleEdit()}>{props.todo.title}</label>
 

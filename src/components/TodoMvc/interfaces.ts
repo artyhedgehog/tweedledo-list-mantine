@@ -8,7 +8,6 @@ export interface ITodo {
 }
 
 export interface ITodoItemProps {
-  t: (id: string) => string;
   key: string;
   todo: ITodo;
   editing?: boolean;

@@ -10,7 +10,7 @@ import './styles.css';
 
 import { CloseButton, TextInput } from '@mantine/core';
 import { addPrefixIfNonEmpty, getListNamespace } from '@/utils/lists';
-import { TodoItem } from '../TodoItem';
+import { TodoItemList } from '../TodoItemList';
 
 export class TodoApp extends React.Component<IAppProps, IAppState> {
   public state: IAppState;
@@ -156,23 +156,6 @@ export class TodoApp extends React.Component<IAppProps, IAppState> {
       return 1;
     });
 
-    const todoItems = sortedTodos.map((todo) => {
-      return (
-        <TodoItem
-          t={this.props.t}
-          key={todo.id}
-          todo={todo}
-          onToggle={this.toggle.bind(this, todo)}
-          onUnarchive={this.unarchive.bind(this, todo)}
-          onDestroy={this.destroy.bind(this, todo)}
-          onEdit={this.edit.bind(this, todo)}
-          editing={this.state.editing === todo.id}
-          onSave={this.save.bind(this, todo)}
-          onCancel={() => this.cancel()}
-        />
-      );
-    });
-
     // Note: It's usually better to use immutable data structures since they're
     // easier to reason about and React works very well with them. That's why
     // we use map(), filter() and reduce() everywhere instead of mutating the
@@ -197,7 +180,7 @@ export class TodoApp extends React.Component<IAppProps, IAppState> {
     if (todos.length) {
       main = (
         <section className="main">
-          <ul className="todo-list">{todoItems}</ul>
+          <TodoItemList todos={sortedTodos} model={this.model} />
         </section>
       );
     }
