@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState } from 'react';
-import classNames from 'classnames';
+import { List } from '@mantine/core';
 import { ENTER_KEY, ESCAPE_KEY } from '../TodoMvc/constants';
 import { ITodoItemProps } from '../TodoMvc/interfaces';
 import { TodoItemIcon } from './TodoItemIcon';
@@ -60,21 +60,20 @@ export function TodoItem(props: ITodoItemProps) {
   }, [props.editing]);
 
   return (
-    <li
-      className={classNames({
-        completed: props.todo.completed,
-        editing: props.editing,
-      })}
-    >
-      <div className="view">
+    <List.Item
+      icon={
         <TodoItemIcon
           archived={props.todo.archived ?? false}
           completed={props.todo.completed}
           onToggle={props.onToggle}
           onUnarchive={props.onUnarchive}
         />
-
-        <label onDoubleClick={() => handleEdit()}>{props.todo.title}</label>
+      }
+    >
+      <div className="view">
+        <label className="renovate" onDoubleClick={() => handleEdit()}>
+          {props.todo.title}
+        </label>
 
         <button type="button" className="edit-item" onClick={props.onEdit} />
         <button type="button" className="destroy" onClick={props.onDestroy} />
@@ -87,6 +86,6 @@ export function TodoItem(props: ITodoItemProps) {
         onChange={(e) => handleChange(e)}
         onKeyDown={(e) => handleKeyDown(e)}
       />
-    </li>
+    </List.Item>
   );
 }
