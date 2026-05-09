@@ -1,10 +1,14 @@
 import { useEffect, useRef, useState } from 'react';
-import { List } from '@mantine/core';
+import { IconChevronDown, IconChevronUp, IconPlaylistX, IconTrash } from '@tabler/icons-react';
+import { Accordion, ActionIcon, Box, Button, Center, Group, TextInput } from '@mantine/core';
+import { useI18n } from '@/utils/strings';
 import { ENTER_KEY, ESCAPE_KEY } from '../TodoMvc/constants';
 import { ITodoItemProps } from '../TodoMvc/interfaces';
 import { TodoItemIcon } from './TodoItemIcon';
 
 export function TodoItem(props: ITodoItemProps) {
+  const { t } = useI18n();
+
   const editFieldRef = useRef<HTMLInputElement | null>(null);
 
   const [state, setState] = useState({ editText: props.todo.title });
@@ -19,15 +23,14 @@ export function TodoItem(props: ITodoItemProps) {
     }
   }
 
-  function handleEdit() {
-    props.onEdit();
+  function handleCancel() {
     setState({ editText: props.todo.title });
+    props.onCancel(event);
   }
 
   function handleKeyDown(event: React.KeyboardEvent) {
     if (event.keyCode === ESCAPE_KEY) {
-      setState({ editText: props.todo.title });
-      props.onCancel(event);
+      handleCancel();
     } else if (event.keyCode === ENTER_KEY) {
       handleSubmit();
     }
@@ -60,32 +63,55 @@ export function TodoItem(props: ITodoItemProps) {
   }, [props.editing]);
 
   return (
-    <List.Item
-      icon={
-        <TodoItemIcon
-          archived={props.todo.archived ?? false}
-          completed={props.todo.completed}
-          onToggle={props.onToggle}
-          onUnarchive={props.onUnarchive}
-        />
-      }
-    >
-      <div className="view">
-        <label className="renovate" onDoubleClick={() => handleEdit()}>
-          {props.todo.title}
-        </label>
-
-        <button type="button" className="edit-item" onClick={props.onEdit} />
-        <button type="button" className="destroy" onClick={props.onDestroy} />
-      </div>
-      <input
-        ref={editFieldRef}
-        className="edit"
-        value={state.editText}
-        onBlur={() => handleSubmit()}
-        onChange={(e) => handleChange(e)}
-        onKeyDown={(e) => handleKeyDown(e)}
+    <Accordion.Item value={props.todo.id} component="li">
+      <TodoItemIcon
+        archived={props.todo.archived ?? false}
+        completed={props.todo.completed}
+        onToggle={props.onToggle}
+        onUnarchive={props.onUnarchive}
       />
-    </List.Item>
+
+      <Center>
+        <Accordion.Control pl={42}>
+          <TextInput
+            ref={editFieldRef}
+            value={state.editText}
+            onChange={(e) => handleChange(e)}
+            onKeyDown={handleKeyDown}
+            size="xl"
+            variant={props.editing ? 'filled' : 'tranparent'}
+            readOnly={!props.editing}
+            mr={40}
+          />
+          <ActionIcon
+            variant="transparent"
+            size={42}
+            m="21 0"
+            pos="absolute"
+            right={0}
+            top={0}
+            onClick={props.editing ? handleSubmit : undefined}
+            display="block"
+            title={props.editing ? t('todoItem.save') : t('todoItem.edit')}
+            aria-label={props.editing ? t('todoItem.save') : t('todoItem.edit')}
+          >
+            {props.editing ? <IconChevronUp /> : <IconChevronDown />}
+          </ActionIcon>
+        </Accordion.Control>
+      </Center>
+      <Accordion.Panel pl={26}>
+        <Group>
+          {props.todo.archived || (
+            <Button leftSection={<IconPlaylistX />} onClick={props.onArchive}>
+              {t('todoItem.archive')}
+            </Button>
+          )}
+          <Box flex={1} />
+          <Button variant="subtle" leftSection={<IconTrash />} onClick={props.onDestroy}>
+            {t('todoItem.delete')}
+          </Button>
+        </Group>
+      </Accordion.Panel>
+    </Accordion.Item>
   );
 }

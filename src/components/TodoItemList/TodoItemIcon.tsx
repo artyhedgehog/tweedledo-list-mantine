@@ -1,4 +1,4 @@
-import { IconCircle, IconCircleCheck, IconTextPlus } from '@tabler/icons-react';
+import { IconCircle, IconCircleCheck, IconPlaylistAdd } from '@tabler/icons-react';
 import { ActionIcon } from '@mantine/core';
 import { useI18n } from '@/utils/strings';
 
@@ -14,7 +14,7 @@ export function TodoItemIcon(props: TodoItemIconProps) {
   const { title, onClick, icon } = (props.archived && {
     title: t('todoItem.unarchive'),
     onClick: props.onUnarchive,
-    icon: <IconTextPlus size={40} />,
+    icon: <IconPlaylistAdd size={40} />,
   }) ||
     (!props.completed && {
       title: t('todoItem.check'),
@@ -30,7 +30,7 @@ export function TodoItemIcon(props: TodoItemIconProps) {
     <ActionIcon
       variant="transparent"
       size={42}
-      m="auto 0"
+      m="21 0"
       top={0}
       bottom={0}
       left="2px"

@@ -71,6 +71,16 @@ class TodoModel implements ITodoModel {
     this.inform();
   }
 
+  public archive(todoToArchive: ITodo) {
+    this.todos = this.todos.map<ITodo>((todo: ITodo) => {
+      return todo !== todoToArchive
+        ? todo
+        : Utils.extend({}, todo, { archived: true, completed: false });
+    });
+
+    this.inform();
+  }
+
   public destroy(todo: ITodo) {
     this.todos = this.todos.filter((candidate) => {
       return candidate !== todo;

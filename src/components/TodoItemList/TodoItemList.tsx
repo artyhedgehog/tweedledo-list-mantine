@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { List } from '@mantine/core';
+import { Accordion } from '@mantine/core';
 import { ITodo, ITodoModel } from '../TodoMvc/interfaces';
 import { TodoItem } from './TodoItem';
 
@@ -9,30 +9,43 @@ export interface TodoItemListProps {
 }
 
 export function TodoItemList(props: TodoItemListProps) {
-  const [editing, setEditing] = useState<string | undefined>(undefined);
+  const [editing, setEditing] = useState<string | null>(null);
 
   const handleSave = (todo: ITodo) => (text: string) => {
     props.model.save(todo, text);
-    setEditing(undefined);
+    setEditing(null);
+  };
+
+  const handleChange = (value: string | null) => {
+    if (value) {
+      setEditing(value);
+    }
   };
 
   return (
-    <List className="todo-list" spacing={0}>
+    <Accordion
+      value={editing}
+      className="todo-list"
+      variant="filled"
+      onChange={handleChange}
+      chevron={null}
+    >
       {props.todos.map((todo) => {
         return (
           <TodoItem
             key={todo.id}
             todo={todo}
             onToggle={props.model.toggle.bind(props.model, todo)}
+            onArchive={props.model.archive.bind(props.model, todo)}
             onUnarchive={props.model.unarchive.bind(props.model, todo)}
             onDestroy={props.model.destroy.bind(props.model, todo)}
             onEdit={setEditing.bind(undefined, todo.id)}
             editing={editing === todo.id}
             onSave={handleSave(todo)}
-            onCancel={setEditing.bind(undefined, undefined)}
+            onCancel={setEditing.bind(undefined, null)}
           />
         );
       })}
-    </List>
+    </Accordion>
   );
 }

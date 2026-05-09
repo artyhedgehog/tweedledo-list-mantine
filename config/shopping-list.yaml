@@ -5,6 +5,10 @@ strings:
   searchBar.placeholder: What do I need to buy?
   footer.archiveCompleted: Check out
   todoItem.unarchive: Out of stock
+  todoItem.archive: Already bought
+  todoItem.edit: Edit
+  todoItem.save: Save
+  todoItem.delete: Delete
   todoItem.check: Bought
   todoItem.uncheck: Cancel
   menu.data: Data export/import

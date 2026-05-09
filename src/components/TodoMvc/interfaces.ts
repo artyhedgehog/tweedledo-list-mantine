@@ -16,6 +16,7 @@ export interface ITodoItemProps {
   onEdit: () => void;
   onCancel: (event: any) => void;
   onToggle: () => void;
+  onArchive: () => void;
   onUnarchive: () => void;
 }
 
@@ -41,6 +42,7 @@ export interface ITodoModel {
   addTodo: (title: string) => void;
   toggleAll: (checked: boolean) => void;
   toggle: (todoToToggle: ITodo) => void;
+  archive: (todo: ITodo) => void;
   unarchive: (todo: ITodo) => void;
   destroy: (todo: ITodo) => void;
   save: (todoToSave: ITodo, text: string) => void;
