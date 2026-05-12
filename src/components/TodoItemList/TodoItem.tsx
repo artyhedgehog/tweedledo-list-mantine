@@ -1,10 +1,15 @@
 import { useEffect, useRef, useState } from 'react';
-import { IconChevronDown, IconChevronUp, IconPlaylistX, IconTrash } from '@tabler/icons-react';
+import { IconChevronUp, IconPlaylistX, IconTrash } from '@tabler/icons-react';
 import { Accordion, ActionIcon, Box, Button, Center, Group, TextInput } from '@mantine/core';
 import { useI18n } from '@/utils/strings';
 import { ENTER_KEY, ESCAPE_KEY } from '../TodoMvc/constants';
 import { ITodoItemProps } from '../TodoMvc/interfaces';
 import { TodoItemIcon } from './TodoItemIcon';
+
+function PriorityIcon() {
+  // TODO Priority
+  return null;
+}
 
 export function TodoItem(props: ITodoItemProps) {
   const { t } = useI18n();
@@ -72,34 +77,38 @@ export function TodoItem(props: ITodoItemProps) {
       />
 
       <Center>
-        <Accordion.Control pl={42}>
+        <Accordion.Control pl={56}>
           <TextInput
             ref={editFieldRef}
             value={state.editText}
             onChange={(e) => handleChange(e)}
             onKeyDown={handleKeyDown}
-            size="xl"
-            variant={props.editing ? 'filled' : 'tranparent'}
+            size="sm"
+            variant="unstyled"
             readOnly={!props.editing}
-            mr={40}
+            mr={props.editing ? 20 : 0}
           />
-          <ActionIcon
-            variant="transparent"
-            size={42}
-            m="21 0"
-            pos="absolute"
-            right={0}
-            top={0}
-            onClick={props.editing ? handleSubmit : undefined}
-            display="block"
-            title={props.editing ? t('todoItem.save') : t('todoItem.edit')}
-            aria-label={props.editing ? t('todoItem.save') : t('todoItem.edit')}
-          >
-            {props.editing ? <IconChevronUp /> : <IconChevronDown />}
-          </ActionIcon>
+          {props.editing ? (
+            <ActionIcon
+              variant="transparent"
+              size={22}
+              m="9 0"
+              pos="absolute"
+              right={0}
+              top={10}
+              onClick={props.editing ? handleSubmit : undefined}
+              display="block"
+              title={props.editing ? t('todoItem.save') : t('todoItem.edit')}
+              aria-label={props.editing ? t('todoItem.save') : t('todoItem.edit')}
+            >
+              <IconChevronUp />
+            </ActionIcon>
+          ) : (
+            <PriorityIcon />
+          )}
         </Accordion.Control>
       </Center>
-      <Accordion.Panel pl={26}>
+      <Accordion.Panel pl={40}>
         <Group>
           {props.todo.archived || (
             <Button leftSection={<IconPlaylistX />} onClick={props.onArchive}>

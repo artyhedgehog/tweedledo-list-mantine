@@ -30,7 +30,7 @@ export function TodoItemIcon(props: TodoItemIconProps) {
     <ActionIcon
       variant="transparent"
       size={42}
-      m="21 0"
+      m="9 0"
       top={0}
       bottom={0}
       left="2px"

@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { Accordion } from '@mantine/core';
 import { ITodo, ITodoModel } from '../TodoMvc/interfaces';
 import { TodoItem } from './TodoItem';
@@ -22,11 +22,21 @@ export function TodoItemList(props: TodoItemListProps) {
     }
   };
 
+  /**
+   * When search changes
+   * - I want the editing closed
+   * - otherwise when I clear the search bar
+   * -- focus jumps to the editting item input
+   */
+  useEffect(() => {
+    setEditing(null);
+  }, [props.todos.length]);
+
   return (
     <Accordion
       value={editing}
       className="todo-list"
-      variant="filled"
+      variant="unstyled"
       onChange={handleChange}
       chevron={null}
     >
