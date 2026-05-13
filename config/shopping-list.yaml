@@ -5,12 +5,13 @@ strings:
   searchBar.placeholder: What do I need to buy?
   footer.archiveCompleted: Check out
   todoItem.unarchive: Out of stock
-  todoItem.archive: Already bought
+  todoItem.archive: Have it
   todoItem.edit: Edit
   todoItem.save: Save
   todoItem.delete: Delete
   todoItem.check: Bought
   todoItem.uncheck: Cancel
+  todoItem.togglePriority: Toggle priority
   menu.data: Data export/import
   menu.tweedledo: To TweedleDo website
 

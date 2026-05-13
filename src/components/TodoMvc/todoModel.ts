@@ -3,6 +3,7 @@
 /*jshint trailing:false */
 /*jshint newcap:false */
 
+import { Priority } from '@/features/priority/priority.types';
 import { ITodo, ITodoModel, NotificationCallback } from './interfaces';
 import { Utils } from './utils';
 
@@ -92,6 +93,14 @@ class TodoModel implements ITodoModel {
   public save(todoToSave: ITodo, text: string) {
     this.todos = this.todos.map((todo) => {
       return todo !== todoToSave ? todo : Utils.extend({}, todo, { title: text });
+    });
+
+    this.inform();
+  }
+
+  public setPriority(todoToUpdate: ITodo, priority: Priority) {
+    this.todos = this.todos.map((todo) => {
+      return todo !== todoToUpdate ? todo : Utils.extend({}, todo, { priority });
     });
 
     this.inform();

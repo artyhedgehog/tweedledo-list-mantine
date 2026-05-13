@@ -1,15 +1,12 @@
 import { useEffect, useRef, useState } from 'react';
 import { IconChevronUp, IconPlaylistX, IconTrash } from '@tabler/icons-react';
 import { Accordion, ActionIcon, Box, Button, Center, Group, TextInput } from '@mantine/core';
+import { PriorityIcon } from '@/features/priority/PriorityIcon';
+import { PriorityToggle } from '@/features/priority/PriorityToggle';
 import { useI18n } from '@/utils/strings';
 import { ENTER_KEY, ESCAPE_KEY } from '../TodoMvc/constants';
 import { ITodoItemProps } from '../TodoMvc/interfaces';
 import { TodoItemIcon } from './TodoItemIcon';
-
-function PriorityIcon() {
-  // TODO Priority
-  return null;
-}
 
 export function TodoItem(props: ITodoItemProps) {
   const { t } = useI18n();
@@ -88,37 +85,38 @@ export function TodoItem(props: ITodoItemProps) {
             readOnly={!props.editing}
             mr={props.editing ? 20 : 0}
           />
-          {props.editing ? (
-            <ActionIcon
-              variant="transparent"
-              size={22}
-              m="9 0"
-              pos="absolute"
-              right={0}
-              top={10}
-              onClick={props.editing ? handleSubmit : undefined}
-              display="block"
-              title={props.editing ? t('todoItem.save') : t('todoItem.edit')}
-              aria-label={props.editing ? t('todoItem.save') : t('todoItem.edit')}
-            >
-              <IconChevronUp />
-            </ActionIcon>
-          ) : (
-            <PriorityIcon />
-          )}
+
+          <ActionIcon
+            variant="transparent"
+            size={32}
+            m="9 0"
+            pos="absolute"
+            right={0}
+            top={5}
+            display="block"
+            onClick={props.editing ? handleSubmit : undefined}
+            title={props.editing ? t('todoItem.save') : t('todoItem.edit')}
+            aria-label={props.editing ? t('todoItem.save') : t('todoItem.edit')}
+          >
+            {props.editing ? <IconChevronUp /> : <PriorityIcon priority={props.todo.priority} />}
+          </ActionIcon>
         </Accordion.Control>
       </Center>
-      <Accordion.Panel pl={40}>
+      <Accordion.Panel mr={-16}>
         <Group>
+          <Button variant="subtle" leftSection={<IconTrash />} onClick={props.onDestroy}>
+            {t('todoItem.delete')}
+          </Button>
+
+          <Box flex={1} />
+
           {props.todo.archived || (
             <Button leftSection={<IconPlaylistX />} onClick={props.onArchive}>
               {t('todoItem.archive')}
             </Button>
           )}
-          <Box flex={1} />
-          <Button variant="subtle" leftSection={<IconTrash />} onClick={props.onDestroy}>
-            {t('todoItem.delete')}
-          </Button>
+
+          <PriorityToggle priority={props.todo.priority} onSetPriority={props.onSetPriority} />
         </Group>
       </Accordion.Panel>
     </Accordion.Item>

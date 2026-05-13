@@ -49,6 +49,7 @@ export function TodoItemList(props: TodoItemListProps) {
             onArchive={props.model.archive.bind(props.model, todo)}
             onUnarchive={props.model.unarchive.bind(props.model, todo)}
             onDestroy={props.model.destroy.bind(props.model, todo)}
+            onSetPriority={props.model.setPriority.bind(props.model, todo)}
             onEdit={setEditing.bind(undefined, todo.id)}
             editing={editing === todo.id}
             onSave={handleSave(todo)}

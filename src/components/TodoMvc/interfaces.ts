@@ -1,10 +1,12 @@
 import * as icons from '@tabler/icons-react';
+import { Priority } from '@/features/priority/priority.types';
 
 export interface ITodo {
   id: string;
   title: string;
   completed: boolean;
   archived?: boolean;
+  priority?: Priority;
 }
 
 export interface ITodoItemProps {
@@ -13,6 +15,7 @@ export interface ITodoItemProps {
   editing?: boolean;
   onSave: (val: any) => void;
   onDestroy: () => void;
+  onSetPriority: (priority: Priority) => void;
   onEdit: () => void;
   onCancel: (event: any) => void;
   onToggle: () => void;
@@ -42,6 +45,7 @@ export interface ITodoModel {
   addTodo: (title: string) => void;
   toggleAll: (checked: boolean) => void;
   toggle: (todoToToggle: ITodo) => void;
+  setPriority: (todo: ITodo, priority: Priority) => void;
   archive: (todo: ITodo) => void;
   unarchive: (todo: ITodo) => void;
   destroy: (todo: ITodo) => void;
