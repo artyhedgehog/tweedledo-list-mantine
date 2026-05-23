@@ -74,7 +74,7 @@ export function TodoItem(props: ITodoItemProps) {
       />
 
       <Center>
-        <Accordion.Control pl={56}>
+        <Accordion.Control pl={56} component="span">
           <TextInput
             ref={editFieldRef}
             value={state.editText}
