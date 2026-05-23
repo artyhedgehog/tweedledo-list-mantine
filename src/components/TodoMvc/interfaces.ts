@@ -63,7 +63,7 @@ export interface ILocation {
   hash: string;
 }
 
-export type ListName = 'groceries' | 'pharmacy' | 'misc';
+export type ListName = string;
 
 export interface IAppProps {
   config: IAppConfig;
@@ -90,8 +90,8 @@ export interface ListConfig {
 export interface AppSettings {
   strings: Record<string, string>;
   lists: ListConfig[];
-  menu: {
-    topLevelItemsLimit: number;
+  menu?: {
+    topLevelItemsLimit?: number;
   };
   states: Array<{
     id: string;
