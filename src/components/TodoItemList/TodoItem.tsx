@@ -1,8 +1,8 @@
 import { useEffect, useRef, useState } from 'react';
-import { IconChevronUp, IconPlaylistX, IconTrash } from '@tabler/icons-react';
-import { Accordion, ActionIcon, Box, Button, Center, Group, TextInput } from '@mantine/core';
-import { PriorityIcon } from '@/features/priority/PriorityIcon';
-import { PriorityToggle } from '@/features/priority/PriorityToggle';
+import { IconChevronUp } from '@tabler/icons-react';
+import { Accordion, ActionIcon, Center, TextInput } from '@mantine/core';
+import { TodoItemMenu } from '@/features/item-menu';
+import { PriorityIcon } from '@/features/priority';
 import { useI18n } from '@/utils/strings';
 import { ENTER_KEY, ESCAPE_KEY } from '../TodoMvc/constants';
 import { ITodoItemProps } from '../TodoMvc/interfaces';
@@ -102,22 +102,9 @@ export function TodoItem(props: ITodoItemProps) {
           </ActionIcon>
         </Accordion.Control>
       </Center>
+
       <Accordion.Panel mr={-16}>
-        <Group>
-          <Button variant="subtle" leftSection={<IconTrash />} onClick={props.onDestroy}>
-            {t('todoItem.delete')}
-          </Button>
-
-          <Box flex={1} />
-
-          {props.todo.archived || (
-            <Button leftSection={<IconPlaylistX />} onClick={props.onArchive}>
-              {t('todoItem.archive')}
-            </Button>
-          )}
-
-          <PriorityToggle priority={props.todo.priority} onSetPriority={props.onSetPriority} />
-        </Group>
+        <TodoItemMenu {...props} />
       </Accordion.Panel>
     </Accordion.Item>
   );

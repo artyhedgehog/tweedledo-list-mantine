@@ -8,7 +8,7 @@ import 'todomvc-common/base.css';
 import 'todomvc-app-css/index.css';
 import './styles.css';
 
-import { CloseButton, TextInput } from '@mantine/core';
+import { SearchOrCreateInputBox } from '@/features/search-or-create-input-box';
 import { addPrefixIfNonEmpty, getListNamespace } from '@/utils/lists';
 import { TodoItemList } from '../TodoItemList';
 
@@ -188,16 +188,15 @@ export class TodoApp extends React.Component<IAppProps, IAppState> {
     return (
       <div>
         <div className="header">
-          <TextInput
+          <SearchOrCreateInputBox
             ref={this.newFieldRef}
-            disabled={this.state.adding}
-            variant="unstyled"
-            className="search-bar"
-            placeholder={this.props.t('searchBar.placeholder')}
+            disabled={!!this.state.adding}
             onKeyDown={(e) => this.handleNewTodoKeyDown(e)}
             value={this.state.searching}
             onChange={this.search.bind(this)}
+            onClearInput={this.search.bind(this, {} as any)}
             leftSection={
+              // TODO replace with batch edit feature
               <>
                 <input
                   id="toggle-all"
@@ -209,13 +208,6 @@ export class TodoApp extends React.Component<IAppProps, IAppState> {
                 <label htmlFor="toggle-all">Mark all as complete</label>
               </>
             }
-            rightSection={
-              this.state.searching ? (
-                <CloseButton onClick={this.search.bind(this, {} as any)} />
-              ) : undefined
-            }
-            size="xl"
-            autoFocus
           />
         </div>
         {main}
