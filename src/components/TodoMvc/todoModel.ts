@@ -13,122 +13,131 @@ import { Utils } from './utils';
 // out, but we do this to demonstrate one way to
 // separate out parts of your application.
 class TodoModel implements ITodoModel {
-  public key: string;
-  public todos: Array<ITodo>;
-  public onChanges: Array<NotificationCallback>;
+    public key: string;
+    public todos: Array<ITodo>;
+    public onChanges: Array<NotificationCallback>;
 
-  constructor(key: string) {
-    this.key = key;
-    this.todos = Utils.getValue(key);
-    this.onChanges = [];
-  }
+    constructor(key: string) {
+        this.key = key;
+        this.todos = Utils.getValue(key);
+        this.onChanges = [];
+    }
 
-  public subscribe(onChange: NotificationCallback) {
-    this.onChanges.push(onChange);
-  }
+    public subscribe(onChange: NotificationCallback) {
+        this.onChanges.push(onChange);
+    }
 
-  public inform() {
-    Utils.setValue(this.key, this.todos);
-    this.onChanges.forEach((cb) => {
-      cb();
-    });
-  }
+    public inform() {
+        Utils.setValue(this.key, this.todos);
+        this.onChanges.forEach((cb) => {
+            cb();
+        });
+    }
 
-  public addTodo(title: string) {
-    this.todos = this.todos.concat({
-      id: Utils.uuid(),
-      title,
-      completed: false,
-    });
+    public addTodo(todo: Omit<ITodo, 'id'>) {
+        this.todos = this.todos.concat({
+            id: Utils.uuid(),
+            ...todo,
+        });
 
-    this.inform();
-  }
+        this.inform();
+    }
 
-  public toggleAll(checked: boolean) {
-    // Note: It's usually better to use immutable data structures since they're
-    // easier to reason about and React works very well with them. That's why
-    // we use map(), filter() and reduce() everywhere instead of mutating the
-    // array or todo items themselves.
-    this.todos = this.todos.map<ITodo>((todo: ITodo) => {
-      return Utils.extend({}, todo, { completed: checked });
-    });
+    public toggleAll(checked: boolean) {
+        // Note: It's usually better to use immutable data structures since they're
+        // easier to reason about and React works very well with them. That's why
+        // we use map(), filter() and reduce() everywhere instead of mutating the
+        // array or todo items themselves.
+        this.todos = this.todos.map<ITodo>((todo: ITodo) => {
+            return Utils.extend({}, todo, { completed: checked });
+        });
 
-    this.inform();
-  }
+        this.inform();
+    }
 
-  public toggle(todoToToggle: ITodo) {
-    this.todos = this.todos.map<ITodo>((todo: ITodo) => {
-      return todo !== todoToToggle ? todo : Utils.extend({}, todo, { completed: !todo.completed });
-    });
+    public toggle(todoToToggle: ITodo) {
+        this.todos = this.todos.map<ITodo>((todo: ITodo) => {
+            return todo !== todoToToggle
+                ? todo
+                : Utils.extend({}, todo, { completed: !todo.completed });
+        });
 
-    this.inform();
-  }
+        this.inform();
+    }
 
-  public unarchive(todoToUnarchive: ITodo) {
-    this.todos = this.todos.map<ITodo>((todo: ITodo) => {
-      return todo !== todoToUnarchive ? todo : Utils.extend({}, todo, { archived: false });
-    });
+    public unarchive(todoToUnarchive: ITodo) {
+        this.todos = this.todos.map<ITodo>((todo: ITodo) => {
+            return todo !== todoToUnarchive
+                ? todo
+                : Utils.extend({}, todo, { archived: false });
+        });
 
-    this.inform();
-  }
+        this.inform();
+    }
 
-  public archive(todoToArchive: ITodo) {
-    this.todos = this.todos.map<ITodo>((todo: ITodo) => {
-      return todo !== todoToArchive
-        ? todo
-        : Utils.extend({}, todo, { archived: true, completed: false });
-    });
+    public archive(todoToArchive: ITodo) {
+        this.todos = this.todos.map<ITodo>((todo: ITodo) => {
+            return todo !== todoToArchive
+                ? todo
+                : Utils.extend({}, todo, { archived: true, completed: false });
+        });
 
-    this.inform();
-  }
+        this.inform();
+    }
 
-  public destroy(todo: ITodo) {
-    this.todos = this.todos.filter((candidate) => {
-      return candidate !== todo;
-    });
+    public destroy(todo: ITodo) {
+        this.todos = this.todos.filter((candidate) => {
+            return candidate !== todo;
+        });
 
-    this.inform();
-  }
+        this.inform();
+    }
 
-  public save(todoToSave: ITodo, text: string) {
-    this.todos = this.todos.map((todo) => {
-      return todo !== todoToSave ? todo : Utils.extend({}, todo, { title: text });
-    });
+    public save(todoToSave: ITodo, text: string) {
+        this.todos = this.todos.map((todo) => {
+            return todo !== todoToSave
+                ? todo
+                : Utils.extend({}, todo, { title: text });
+        });
 
-    this.inform();
-  }
+        this.inform();
+    }
 
-  public setPriority(todoToUpdate: ITodo, priority: Priority) {
-    this.todos = this.todos.map((todo) => {
-      return todo !== todoToUpdate ? todo : Utils.extend({}, todo, { priority });
-    });
+    public setPriority(todoToUpdate: ITodo, priority: Priority) {
+        this.todos = this.todos.map((todo) => {
+            return todo !== todoToUpdate
+                ? todo
+                : Utils.extend({}, todo, { priority });
+        });
 
-    this.inform();
-  }
+        this.inform();
+    }
 
-  public archiveCompleted() {
-    this.todos = this.todos.map<ITodo>((todo: ITodo) => {
-      return todo.completed ? Utils.extend({}, todo, { completed: false, archived: true }) : todo;
-    });
+    public archiveCompleted() {
+        this.todos = this.todos.map<ITodo>((todo: ITodo) => {
+            return todo.completed
+                ? Utils.extend({}, todo, { completed: false, archived: true })
+                : todo;
+        });
 
-    this.inform();
-  }
+        this.inform();
+    }
 
-  public destroyCompleted() {
-    this.todos = this.todos.filter((todo) => {
-      return !todo.completed;
-    });
+    public destroyCompleted() {
+        this.todos = this.todos.filter((todo) => {
+            return !todo.completed;
+        });
 
-    this.inform();
-  }
+        this.inform();
+    }
 
-  public destroyArchived() {
-    this.todos = this.todos.filter((todo) => {
-      return !todo.archived;
-    });
+    public destroyArchived() {
+        this.todos = this.todos.filter((todo) => {
+            return !todo.archived;
+        });
 
-    this.inform();
-  }
+        this.inform();
+    }
 }
 
 export { TodoModel };
