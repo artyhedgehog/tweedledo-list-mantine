@@ -11,13 +11,15 @@ const IdentifierStringSchema = z.string().regex(/\w+/);
 
 const AppConfigV1Schema = z.object({
   strings: z.record(IdentifierStringSchema, z.string()),
-  lists: z.array(
-    z.object({
-      id: IdentifierStringSchema,
-      icon: IdentifierStringSchema,
-      label: z.string(),
-    })
-  ),
+  lists: z
+    .array(
+      z.object({
+        id: IdentifierStringSchema,
+        icon: IdentifierStringSchema,
+        label: z.string(),
+      })
+    )
+    .nonempty(),
   states: z.array(
     z.object({
       id: IdentifierStringSchema,
@@ -29,13 +31,16 @@ const AppConfigV1Schema = z.object({
   filters: z.object(),
 });
 
-const AppSettingsV1Schema = AppConfigV1Schema.extend({
-  menu: z
-    .object({
-      topLevelItemsLimit: z.number().optional(),
-    })
-    .optional(),
-});
+const AppSettingsV1Schema = AppConfigV1Schema.partial()
+  .extend({
+    menu: z
+      .object({
+        topLevelItemsLimit: z.number().optional(),
+      })
+      .optional(),
+  })
+  .optional()
+  .default({} as any);
 
 export function useConfig(): {
   config: IAppConfig;
@@ -46,11 +51,25 @@ export function useConfig(): {
   const namespace = addPrefixIfNonEmpty(NAMESPACE, storePrefix);
 
   const initializeConfig = () => {
-    const validConfigFromVite = AppConfigV1Schema.parse(configFromVite);
+    let validConfigFromVite;
+    try {
+      validConfigFromVite = AppConfigV1Schema.parse(configFromVite);
+    } catch (error) {
+      console.error('configFromVite is not a valid AppConfigV1Schema', error, configFromVite);
+
+      validConfigFromVite = {};
+    }
 
     const { storePrefix: _storePrefix, ...configData } = Utils.getValue(namespace, {});
 
-    const validSettingsFromStorage = AppSettingsV1Schema.parse(configData);
+    let validSettingsFromStorage;
+    try {
+      validSettingsFromStorage = AppSettingsV1Schema.parse(configData);
+    } catch (error) {
+      console.error('configData is not a valid AppSettingsV1Schema', error, configData);
+
+      validSettingsFromStorage = {};
+    }
 
     return {
       strings: {
@@ -58,7 +77,7 @@ export function useConfig(): {
         ...validSettingsFromStorage.strings,
       },
       lists: (validSettingsFromStorage.lists || validConfigFromVite.lists) as ListConfig[],
-      states: validSettingsFromStorage.states || validConfigFromVite.states,
+      states: validSettingsFromStorage.states || validConfigFromVite.states || [],
       filters: {
         ...validConfigFromVite.filters,
         ...validSettingsFromStorage.filters,

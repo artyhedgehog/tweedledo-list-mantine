@@ -25,6 +25,7 @@
     "cy:run": "cypress run --browser chrome",
     "cy:test": "npm run preview:clean && npm run cy:run",
     "test": "npm run typecheck && npm run prettier:write && npm run lint:fix && npm run vitest",
+    "check": "npm run test && npm run preview:clean",
     "test:full": "npm run test && npm run cy:test",
     "storybook": "storybook dev -p 6006",
     "storybook:build": "storybook build"
