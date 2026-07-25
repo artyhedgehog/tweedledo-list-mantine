@@ -34,11 +34,10 @@ class TodoModel implements ITodoModel {
         });
     }
 
-    public addTodo(title: string) {
+    public addTodo(todo: Omit<ITodo, 'id'>) {
         this.todos = this.todos.concat({
             id: Utils.uuid(),
-            title,
-            completed: false,
+            ...todo,
         });
 
         this.inform();

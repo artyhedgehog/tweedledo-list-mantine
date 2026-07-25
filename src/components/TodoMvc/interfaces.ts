@@ -42,7 +42,7 @@ export interface ITodoModel {
     onChanges: Array<NotificationCallback>;
     subscribe: (onChange: NotificationCallback) => void;
     inform: () => void;
-    addTodo: (title: string) => void;
+    addTodo: (todo: Omit<ITodo, 'id'>) => void;
     toggleAll: (checked: boolean) => void;
     toggle: (todoToToggle: ITodo) => void;
     setPriority: (todo: ITodo, priority: Priority) => void;

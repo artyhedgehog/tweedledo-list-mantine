@@ -1,5 +1,4 @@
 import * as React from 'react';
-import { ENTER_KEY } from './constants';
 import { TodoFooter } from './footer';
 import { IAppProps, IAppState, ITodo, ITodoModel } from './interfaces';
 import { TodoModel } from './todoModel';
@@ -67,23 +66,13 @@ export class TodoApp extends React.Component<IAppProps, IAppState> {
         }
     }
 
-    public handleNewTodoKeyDown(event: React.KeyboardEvent) {
-        if (event.keyCode !== ENTER_KEY) {
-            return;
-        }
+    public handleCreate(todo: Omit<ITodo, 'id'>) {
+        this.model.addTodo(todo);
+        this.setState({ searching: todo.title, adding: true });
 
-        event.preventDefault();
-
-        const val = this.state.searching.trim();
-
-        if (val) {
-            this.model.addTodo(val);
-            this.setState({ searching: val, adding: true });
-
-            setTimeout(() => {
-                this.setState({ searching: '', adding: false });
-            }, 300);
-        }
+        setTimeout(() => {
+            this.setState({ searching: '', adding: false });
+        }, 300);
     }
 
     public toggleAll(event: React.FormEvent) {
@@ -195,7 +184,7 @@ export class TodoApp extends React.Component<IAppProps, IAppState> {
                 <SearchOrCreateInputBox
                     ref={this.newFieldRef}
                     disabled={!!this.state.adding}
-                    onKeyDown={(e) => this.handleNewTodoKeyDown(e)}
+                    onCreate={this.handleCreate.bind(this)}
                     value={this.state.searching}
                     onChange={this.search.bind(this)}
                     onClearInput={this.search.bind(this, {} as any)}
