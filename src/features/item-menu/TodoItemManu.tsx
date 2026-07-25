@@ -1,10 +1,17 @@
 import { IconPlaylistX, IconTrash } from '@tabler/icons-react';
 import { Box, Button, Group } from '@mantine/core';
-import { ITodoItemProps } from '@/components/TodoMvc/interfaces';
 import { PriorityToggle } from '@/features/priority';
 import { useI18n } from '@/utils/strings';
+import { Priority } from '../priority';
+import { MouseEventHandler } from 'react';
 
-export function TodoItemMenu(props: ITodoItemProps) {
+export function TodoItemMenu(props: {
+  archived: boolean;
+  priority: Priority;
+  onDestroy: MouseEventHandler<HTMLButtonElement>;
+  onArchive: MouseEventHandler<HTMLButtonElement>;
+  onSetPriority: (priority: Priority) => void;
+}) {
   const { t } = useI18n();
 
   return (
@@ -15,13 +22,13 @@ export function TodoItemMenu(props: ITodoItemProps) {
 
       <Box flex={1} />
 
-      {props.todo.archived || (
+      {props.archived || (
         <Button leftSection={<IconPlaylistX />} onClick={props.onArchive}>
           {t('todoItem.archive')}
         </Button>
       )}
 
-      <PriorityToggle priority={props.todo.priority} onSetPriority={props.onSetPriority} />
+      <PriorityToggle priority={props.priority} onSetPriority={props.onSetPriority} />
     </Group>
   );
 }

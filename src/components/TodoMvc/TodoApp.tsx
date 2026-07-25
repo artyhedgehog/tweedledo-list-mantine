@@ -187,29 +187,27 @@ export class TodoApp extends React.Component<IAppProps, IAppState> {
 
     return (
       <div>
-        <div className="header">
-          <SearchOrCreateInputBox
-            ref={this.newFieldRef}
-            disabled={!!this.state.adding}
-            onKeyDown={(e) => this.handleNewTodoKeyDown(e)}
-            value={this.state.searching}
-            onChange={this.search.bind(this)}
-            onClearInput={this.search.bind(this, {} as any)}
-            leftSection={
-              // TODO replace with batch edit feature
-              <>
-                <input
-                  id="toggle-all"
-                  className="toggle-all"
-                  type="checkbox"
-                  onChange={(e) => this.toggleAll(e)}
-                  checked={activeTodoCount === 0}
-                />
-                <label htmlFor="toggle-all">Mark all as complete</label>
-              </>
-            }
-          />
-        </div>
+        <SearchOrCreateInputBox
+          ref={this.newFieldRef}
+          disabled={!!this.state.adding}
+          onKeyDown={(e) => this.handleNewTodoKeyDown(e)}
+          value={this.state.searching}
+          onChange={this.search.bind(this)}
+          onClearInput={this.search.bind(this, {} as any)}
+          leftSection={
+            // TODO replace with batch edit feature
+            <>
+              <input
+                id="toggle-all"
+                className="toggle-all"
+                type="checkbox"
+                onChange={(e) => this.toggleAll(e)}
+                checked={activeTodoCount === 0}
+              />
+              <label htmlFor="toggle-all">Mark all as complete</label>
+            </>
+          }
+        />
         {main}
         {footer}
       </div>

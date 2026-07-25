@@ -104,7 +104,13 @@ export function TodoItem(props: ITodoItemProps) {
       </Center>
 
       <Accordion.Panel mr={-16}>
-        <TodoItemMenu {...props} />
+        <TodoItemMenu
+          archived={!!props.todo.archived}
+          priority={props.todo.priority}
+          onDestroy={props.onDestroy}
+          onArchive={props.onArchive}
+          onSetPriority={props.onSetPriority}
+        />
       </Accordion.Panel>
     </Accordion.Item>
   );
