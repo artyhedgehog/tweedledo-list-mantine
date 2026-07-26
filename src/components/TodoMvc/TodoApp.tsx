@@ -7,9 +7,9 @@ import 'todomvc-common/base.css';
 import 'todomvc-app-css/index.css';
 import './styles.css';
 
+import { TodoItemList } from '../TodoItemList';
 import { SearchOrCreateInputBox } from '@/features/search-or-create-input-box';
 import { addPrefixIfNonEmpty, getListNamespace } from '@/utils/lists';
-import { TodoItemList } from '../TodoItemList';
 
 export class TodoApp extends React.Component<IAppProps, IAppState> {
     public state: IAppState;

@@ -6,9 +6,9 @@
 import * as React from 'react';
 import classNames from 'classnames';
 import { Button } from '@mantine/core';
+import { ITodoFooterProps } from './interfaces';
 import { useConfig } from '@/hooks/use-config';
 import { useI18n } from '@/utils/strings';
-import { ITodoFooterProps } from './interfaces';
 
 export function TodoFooter(props: ITodoFooterProps) {
     const { config } = useConfig();

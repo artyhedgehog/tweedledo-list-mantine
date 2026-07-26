@@ -3,9 +3,9 @@
 /*jshint trailing:false */
 /*jshint newcap:false */
 
-import { Priority } from '@/features/priority/priority.types';
 import { ITodo, ITodoModel, NotificationCallback } from './interfaces';
 import { Utils } from './utils';
+import { Priority } from '@/features/priority/priority.types';
 
 // Generic "model" object. You can use whatever
 // framework you want. For this application it

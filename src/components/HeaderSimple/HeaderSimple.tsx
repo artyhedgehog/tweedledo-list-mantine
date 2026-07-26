@@ -15,11 +15,11 @@ import {
     ScrollArea,
 } from '@mantine/core';
 import { useDisclosure } from '@mantine/hooks';
+import classes from './HeaderSimple.module.css';
 import { TablerIcon } from '@/features/tabler-icon';
 import { useConfig } from '@/hooks/use-config';
 import { path, useLists } from '@/utils/lists';
 import { useI18n } from '@/utils/strings';
-import classes from './HeaderSimple.module.css';
 
 const MENU_ICON_SIZE = 20;
 

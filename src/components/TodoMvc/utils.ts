@@ -1,5 +1,5 @@
-import { addPrefixIfNonEmpty, getListNamespace } from '@/utils/lists';
 import { IAppConfig, ListName } from './interfaces';
+import { addPrefixIfNonEmpty, getListNamespace } from '@/utils/lists';
 
 class Utils {
     public static uuid(): string {

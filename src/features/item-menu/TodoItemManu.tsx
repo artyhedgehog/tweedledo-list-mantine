@@ -9,11 +9,11 @@ import {
     IconTrash,
 } from '@tabler/icons-react';
 import { ActionIcon, Box, Button, Group, Menu } from '@mantine/core';
+import { TablerIcon } from '../tabler-icon';
 import { ListName } from '@/components/TodoMvc/interfaces';
 import { Priority, PriorityToggle } from '@/features/priority';
 import { useLists } from '@/utils/lists';
 import { useI18n } from '@/utils/strings';
-import { TablerIcon } from '../tabler-icon';
 
 const MENU_ICON_SIZE = 20;
 const MENU_OPEN_DELAY = 120;

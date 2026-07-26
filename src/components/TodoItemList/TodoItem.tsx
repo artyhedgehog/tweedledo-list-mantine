@@ -1,12 +1,12 @@
 import { useEffect, useRef, useState } from 'react';
 import { IconChevronUp } from '@tabler/icons-react';
 import { Accordion, ActionIcon, Center, TextInput } from '@mantine/core';
-import { TodoItemMenu } from '@/features/item-menu';
-import { PriorityIcon } from '@/features/priority';
-import { useI18n } from '@/utils/strings';
 import { ENTER_KEY, ESCAPE_KEY } from '../TodoMvc/constants';
 import { ITodoItemProps } from '../TodoMvc/interfaces';
 import { TodoItemIcon } from './TodoItemIcon';
+import { TodoItemMenu } from '@/features/item-menu';
+import { PriorityIcon } from '@/features/priority';
+import { useI18n } from '@/utils/strings';
 
 export function TodoItem(props: ITodoItemProps) {
     const { t } = useI18n();

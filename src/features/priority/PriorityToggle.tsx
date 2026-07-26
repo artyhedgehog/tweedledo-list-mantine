@@ -1,9 +1,9 @@
 import { useCallback } from 'react';
 import { IconStar, IconStarFilled } from '@tabler/icons-react';
 import { ActionIcon } from '@mantine/core';
-import { useI18n } from '@/utils/strings';
 import { getToggledPriority } from './get-toggled-priority';
 import { Priority } from './priority.types';
+import { useI18n } from '@/utils/strings';
 
 export interface PriorityToggleProps {
     priority: Priority;

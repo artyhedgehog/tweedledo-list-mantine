@@ -9,9 +9,9 @@ import {
 import { Box, CloseButton, TextInput } from '@mantine/core';
 import { ENTER_KEY } from '@/components/TodoMvc/constants';
 import { ITodo } from '@/components/TodoMvc/interfaces';
+import { TodoItemMenu } from '@/features/item-menu';
+import { getToggledPriority } from '@/features/priority';
 import { useI18n } from '@/utils/strings';
-import { TodoItemMenu } from '../item-menu';
-import { getToggledPriority } from '../priority';
 
 const defaultState = {
     completed: false,
