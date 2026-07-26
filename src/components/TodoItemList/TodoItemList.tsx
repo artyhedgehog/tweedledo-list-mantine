@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react';
 import { Accordion } from '@mantine/core';
-import { ITodo, ITodoModel } from '../TodoMvc/interfaces';
+import { ITodo, ITodoModel, ListName } from '../TodoMvc/interfaces';
+import { TodoModel } from '../TodoMvc/todoModel';
 import { TodoItem } from './TodoItem';
 
 export interface TodoItemListProps {
@@ -11,10 +12,14 @@ export interface TodoItemListProps {
 export function TodoItemList(props: TodoItemListProps) {
     const [editing, setEditing] = useState<string | null>(null);
 
-    const handleSave = (todo: ITodo) => (text: string) => {
-        props.model.save(todo, text);
-        setEditing(null);
-    };
+    const handleSave =
+        (todo: ITodo) => (text: string, finishEditing: boolean) => {
+            props.model.save(todo, text);
+
+            if (finishEditing) {
+                setEditing(null);
+            }
+        };
 
     const handleChange = (value: string | null) => {
         if (value) {
@@ -60,6 +65,27 @@ export function TodoItemList(props: TodoItemListProps) {
                         editing={editing === todo.id}
                         onSave={handleSave(todo)}
                         onCancel={setEditing.bind(undefined, null)}
+                        onDuplicate={props.model.addTodo.bind(
+                            props.model,
+                            todo
+                        )}
+                        onCopyToList={(listName: ListName) => {
+                            const destinationModel = TodoModel.getForList(
+                                listName,
+                                props.model.storePrefix
+                            );
+
+                            destinationModel.addTodo(todo);
+                        }}
+                        onMoveToList={(listName: ListName) => {
+                            const destinationModel = TodoModel.getForList(
+                                listName,
+                                props.model.storePrefix
+                            );
+
+                            destinationModel.addTodo(todo);
+                            props.model.destroy(todo);
+                        }}
                     />
                 );
             })}

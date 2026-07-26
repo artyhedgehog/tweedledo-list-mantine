@@ -9,7 +9,6 @@ import './styles.css';
 
 import { TodoItemList } from '../TodoItemList';
 import { SearchOrCreateInputBox } from '@/features/search-or-create-input-box';
-import { addPrefixIfNonEmpty, getListNamespace } from '@/utils/lists';
 
 export class TodoApp extends React.Component<IAppProps, IAppState> {
     public state: IAppState;
@@ -21,12 +20,9 @@ export class TodoApp extends React.Component<IAppProps, IAppState> {
     constructor(props: IAppProps) {
         super(props);
 
-        this.model = new TodoModel(
-            addPrefixIfNonEmpty(
-                getListNamespace(props.list),
-                props.config.storePrefix ?? ''
-            )
-        );
+        const listName = props.list;
+
+        this.model = TodoModel.getForList(listName, props.config.storePrefix);
 
         this.state = {
             // TODO Move default state somewhere without using specific key (`.all.`)
