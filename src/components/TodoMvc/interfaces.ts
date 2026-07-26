@@ -1,5 +1,5 @@
-import * as icons from '@tabler/icons-react';
-import { Priority } from '@/features/priority/priority.types';
+import { Priority } from '@/features/priority';
+import { IconComponentName } from '@/features/tabler-icon';
 
 export interface ITodo {
     id: string;
@@ -78,8 +78,6 @@ export interface IAppState {
     searching: string;
     adding?: boolean;
 }
-
-export type IconComponentName = keyof typeof icons;
 
 export interface ListConfig {
     id: ListName;

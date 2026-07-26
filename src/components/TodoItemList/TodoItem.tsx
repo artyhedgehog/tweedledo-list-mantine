@@ -122,6 +122,15 @@ export function TodoItem(props: ITodoItemProps) {
                     onDestroy={props.onDestroy}
                     onArchive={props.onArchive}
                     onSetPriority={props.onSetPriority}
+                    onDuplicate={() => {
+                        /* TODO implement */
+                    }}
+                    onCopyToList={() => {
+                        /* TODO implement */
+                    }}
+                    onMoveToList={() => {
+                        /* TODO implement */
+                    }}
                 />
             </Accordion.Panel>
         </Accordion.Item>
