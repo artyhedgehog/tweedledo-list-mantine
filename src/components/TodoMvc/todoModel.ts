@@ -3,9 +3,15 @@
 /*jshint trailing:false */
 /*jshint newcap:false */
 
-import { Priority } from '@/features/priority/priority.types';
-import { ITodo, ITodoModel, NotificationCallback } from './interfaces';
+import {
+    ITodo,
+    ITodoModel,
+    ListName,
+    NotificationCallback,
+} from './interfaces';
 import { Utils } from './utils';
+import { Priority } from '@/features/priority/priority.types';
+import { addPrefixIfNonEmpty, getListNamespace } from '@/utils/lists';
 
 // Generic "model" object. You can use whatever
 // framework you want. For this application it
@@ -14,12 +20,27 @@ import { Utils } from './utils';
 // separate out parts of your application.
 class TodoModel implements ITodoModel {
     public key: string;
+    public storePrefix: string | undefined;
     public todos: Array<ITodo>;
     public onChanges: Array<NotificationCallback>;
 
-    constructor(key: string) {
-        this.key = key;
-        this.todos = Utils.getValue(key);
+    private static models: Record<ListName, TodoModel> = {};
+
+    public static getForList(listName: ListName, storePrefix?: string) {
+        if (!(listName in TodoModel.models)) {
+            TodoModel.models[listName] = new TodoModel(listName, storePrefix);
+        }
+
+        return TodoModel.models[listName];
+    }
+
+    private constructor(listName: ListName, storePrefix?: string) {
+        this.key = addPrefixIfNonEmpty(
+            getListNamespace(listName),
+            storePrefix ?? ''
+        );
+        this.storePrefix = storePrefix;
+        this.todos = Utils.getValue(this.key);
         this.onChanges = [];
     }
 
@@ -36,8 +57,8 @@ class TodoModel implements ITodoModel {
 
     public addTodo(todo: Omit<ITodo, 'id'>) {
         this.todos = this.todos.concat({
-            id: Utils.uuid(),
             ...todo,
+            id: Utils.uuid(),
         });
 
         this.inform();

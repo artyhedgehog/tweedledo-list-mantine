@@ -4,7 +4,7 @@ export function useI18n() {
     const { config } = useConfig();
 
     function t(id: string): string {
-        return config.strings[id];
+        return config.strings[id] ?? id;
     }
 
     return { t };

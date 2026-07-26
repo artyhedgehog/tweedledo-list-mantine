@@ -1,45 +1,52 @@
 import { useEffect, useRef, useState } from 'react';
 import { IconChevronUp } from '@tabler/icons-react';
 import { Accordion, ActionIcon, Center, TextInput } from '@mantine/core';
-import { TodoItemMenu } from '@/features/item-menu';
-import { PriorityIcon } from '@/features/priority';
-import { useI18n } from '@/utils/strings';
 import { ENTER_KEY, ESCAPE_KEY } from '../TodoMvc/constants';
 import { ITodoItemProps } from '../TodoMvc/interfaces';
 import { TodoItemIcon } from './TodoItemIcon';
+import { TodoItemMenu } from '@/features/item-menu';
+import { PriorityIcon } from '@/features/priority';
+import { useI18n } from '@/utils/strings';
 
-export function TodoItem(props: ITodoItemProps) {
+export function TodoItem({
+    key,
+    todo,
+    editing,
+    ...handlerProps
+}: ITodoItemProps) {
     const { t } = useI18n();
 
     const editFieldRef = useRef<HTMLInputElement | null>(null);
 
-    const [state, setState] = useState({ editText: props.todo.title });
+    const [state, setState] = useState({ editText: todo.title });
 
-    function handleSubmit() {
+    function handleSubmit(finishEditing: boolean) {
         const val = state.editText.trim();
+
         if (val) {
-            props.onSave(val);
+            handlerProps.onSave(val, finishEditing);
             setState({ editText: val });
         } else {
-            props.onDestroy();
+            handlerProps.onDestroy();
         }
     }
 
     function handleCancel() {
-        setState({ editText: props.todo.title });
-        props.onCancel(event);
+        setState({ editText: todo.title });
+        handlerProps.onCancel(event);
     }
 
     function handleKeyDown(event: React.KeyboardEvent) {
         if (event.keyCode === ESCAPE_KEY) {
             handleCancel();
         } else if (event.keyCode === ENTER_KEY) {
-            handleSubmit();
+            handleSubmit(true);
         }
     }
 
     function handleChange(event: React.FormEvent) {
         const input: any = event.target;
+
         setState({ editText: input.value });
     }
 
@@ -51,7 +58,7 @@ export function TodoItem(props: ITodoItemProps) {
      */
     useEffect(() => {
         // run when `editing` changes from false -> true
-        if (!props.editing) {
+        if (!editing) {
             return;
         }
 
@@ -62,15 +69,15 @@ export function TodoItem(props: ITodoItemProps) {
 
         node.focus();
         node.setSelectionRange(node.value.length, node.value.length);
-    }, [props.editing]);
+    }, [editing]);
 
     return (
-        <Accordion.Item value={props.todo.id} component="li">
+        <Accordion.Item value={todo.id} component="li">
             <TodoItemIcon
-                archived={props.todo.archived ?? false}
-                completed={props.todo.completed}
-                onToggle={props.onToggle}
-                onUnarchive={props.onUnarchive}
+                archived={todo.archived ?? false}
+                completed={todo.completed}
+                onToggle={handlerProps.onToggle}
+                onUnarchive={handlerProps.onUnarchive}
             />
 
             <Center>
@@ -80,10 +87,11 @@ export function TodoItem(props: ITodoItemProps) {
                         value={state.editText}
                         onChange={(e) => handleChange(e)}
                         onKeyDown={handleKeyDown}
+                        onBlur={handleSubmit.bind(undefined, false)}
                         size="sm"
                         variant="unstyled"
-                        readOnly={!props.editing}
-                        mr={props.editing ? 20 : 0}
+                        readOnly={!editing}
+                        mr={editing ? 20 : 0}
                     />
 
                     <ActionIcon
@@ -94,22 +102,22 @@ export function TodoItem(props: ITodoItemProps) {
                         right={0}
                         top={5}
                         display="block"
-                        onClick={props.editing ? handleSubmit : undefined}
+                        onClick={
+                            editing
+                                ? handleSubmit.bind(undefined, true)
+                                : undefined
+                        }
                         title={
-                            props.editing
-                                ? t('todoItem.save')
-                                : t('todoItem.edit')
+                            editing ? t('todoItem.save') : t('todoItem.edit')
                         }
                         aria-label={
-                            props.editing
-                                ? t('todoItem.save')
-                                : t('todoItem.edit')
+                            editing ? t('todoItem.save') : t('todoItem.edit')
                         }
                     >
-                        {props.editing ? (
+                        {editing ? (
                             <IconChevronUp />
                         ) : (
-                            <PriorityIcon priority={props.todo.priority} />
+                            <PriorityIcon priority={todo.priority} />
                         )}
                     </ActionIcon>
                 </Accordion.Control>
@@ -117,11 +125,9 @@ export function TodoItem(props: ITodoItemProps) {
 
             <Accordion.Panel mr={-16}>
                 <TodoItemMenu
-                    archived={props.todo.archived}
-                    priority={props.todo.priority}
-                    onDestroy={props.onDestroy}
-                    onArchive={props.onArchive}
-                    onSetPriority={props.onSetPriority}
+                    archived={todo.archived}
+                    priority={todo.priority}
+                    {...handlerProps}
                 />
             </Accordion.Panel>
         </Accordion.Item>

@@ -1,5 +1,9 @@
 import { ReactNode } from 'react';
-import * as icons from '@tabler/icons-react';
+import {
+    IconArrowsLeftRight,
+    IconExternalLink,
+    IconShoppingBagEdit,
+} from '@tabler/icons-react';
 import { useLocation } from 'react-router-dom';
 import {
     ActionIcon,
@@ -11,15 +15,13 @@ import {
     ScrollArea,
 } from '@mantine/core';
 import { useDisclosure } from '@mantine/hooks';
+import classes from './HeaderSimple.module.css';
+import { TablerIcon } from '@/features/tabler-icon';
 import { useConfig } from '@/hooks/use-config';
 import { path, useLists } from '@/utils/lists';
 import { useI18n } from '@/utils/strings';
-import classes from './HeaderSimple.module.css';
 
 const MENU_ICON_SIZE = 20;
-
-const { IconArrowsLeftRight, IconExternalLink, IconList, IconShoppingBagEdit } =
-    icons;
 
 interface Item {
     list: string;
@@ -43,18 +45,15 @@ export function HeaderSimple() {
     const limit = config.menu?.topLevelItemsLimit;
     const { topLevelItems, burgerItems } = listConfigs.reduce(
         (acc, { id: list, label, icon }) => {
-            const CustomIcon = icon && icons[icon];
-            const IconComponent = (CustomIcon ||
-                IconList) as React.ComponentType<icons.IconProps>;
             const href = path(list);
             const isActive = activeHref === href;
             const item = {
                 list,
                 href,
-                label: CustomIcon && !isActive ? '' : label,
+                label: icon && !isActive ? '' : label,
                 title: label,
                 isActive,
-                icon: <IconComponent size={MENU_ICON_SIZE} />,
+                icon: <TablerIcon icon={icon} size={MENU_ICON_SIZE} />,
             };
 
             const isFull = limit && acc.topLevelItems.length >= limit;

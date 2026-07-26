@@ -12,6 +12,11 @@ strings:
   todoItem.check: Купил
   todoItem.uncheck: Отмена
   todoItem.togglePriority: Переключить приоритет
+  todoItem.add: Добавить
+  todoItem.actions: Действия
+  todoItem.actions.duplicate: Дублировать
+  todoItem.actions.copyToList: Скопировать в список ...
+  todoItem.actions.moveToList: Перенести в список ...
   menu.data: Экспортировать/импортировать данные
   menu.tweedledo: На сайт TweedleDo
 

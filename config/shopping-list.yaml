@@ -12,6 +12,11 @@ strings:
   todoItem.check: Bought
   todoItem.uncheck: Cancel
   todoItem.togglePriority: Toggle priority
+  todoItem.add: Add
+  todoItem.actions: Actions
+  todoItem.actions.duplicate: Duplicate
+  todoItem.actions.copyToList: Copy to list ...
+  todoItem.actions.moveToList: Move to list ...
   menu.data: Data export/import
   menu.tweedledo: To TweedleDo website
 

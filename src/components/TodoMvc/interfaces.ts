@@ -1,5 +1,5 @@
-import * as icons from '@tabler/icons-react';
-import { Priority } from '@/features/priority/priority.types';
+import { Priority } from '@/features/priority';
+import { IconComponentName } from '@/features/tabler-icon';
 
 export interface ITodo {
     id: string;
@@ -13,7 +13,7 @@ export interface ITodoItemProps {
     key: string;
     todo: ITodo;
     editing?: boolean;
-    onSave: (val: any) => void;
+    onSave: (val: string, finishEditing: boolean) => void;
     onDestroy: () => void;
     onSetPriority: (priority: Priority) => void;
     onEdit: () => void;
@@ -21,6 +21,9 @@ export interface ITodoItemProps {
     onToggle: () => void;
     onArchive: () => void;
     onUnarchive: () => void;
+    onDuplicate: () => void;
+    onCopyToList: (list: ListName) => void;
+    onMoveToList: (list: ListName) => void;
 }
 
 export interface ITodoItemState {
@@ -38,6 +41,7 @@ export type NotificationCallback = () => void;
 
 export interface ITodoModel {
     key: string;
+    storePrefix: string | undefined;
     todos: Array<ITodo>;
     onChanges: Array<NotificationCallback>;
     subscribe: (onChange: NotificationCallback) => void;
@@ -78,8 +82,6 @@ export interface IAppState {
     searching: string;
     adding?: boolean;
 }
-
-export type IconComponentName = keyof typeof icons;
 
 export interface ListConfig {
     id: ListName;
