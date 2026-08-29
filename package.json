@@ -42,6 +42,7 @@
     "react-router-dom": "^7.9.4",
     "todomvc-app-css": "2.4.3",
     "todomvc-common": "1.0.5",
+    "use-debounce": "^10.1.1",
     "yaml": "^2.8.2",
     "zod": "^4.4.3"
   },

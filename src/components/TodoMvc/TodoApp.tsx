@@ -134,7 +134,7 @@ export class TodoApp extends React.Component<IAppProps, IAppState> {
         };
         const shownTodos = todos.filter(filter);
 
-        const sortedTodos = shownTodos.sort((a, b) => {
+        const sortedTodos = shownTodos.toSorted((a, b) => {
             if (b.title === a.title) {
                 return 0;
             }
@@ -182,7 +182,7 @@ export class TodoApp extends React.Component<IAppProps, IAppState> {
                     disabled={!!this.state.adding}
                     onCreate={this.handleCreate.bind(this)}
                     value={this.state.searching}
-                    onChange={this.search.bind(this)}
+                    onSearch={this.search.bind(this)}
                     onClearInput={this.search.bind(this, {} as any)}
                     leftSection={
                         // TODO replace with batch edit feature
@@ -206,10 +206,7 @@ export class TodoApp extends React.Component<IAppProps, IAppState> {
         );
     }
 
-    public search(event: React.FormEvent) {
-        const input: any = event.currentTarget;
-        const searching = input?.value ?? '';
-
+    public search(searching: string) {
         this.setState({ searching });
     }
 }

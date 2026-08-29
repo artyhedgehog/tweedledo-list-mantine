@@ -1,11 +1,14 @@
 import {
-    ChangeEventHandler,
+    ChangeEvent,
     MouseEvent,
     MouseEventHandler,
     ReactNode,
     Ref,
+    useCallback,
     useState,
 } from 'react';
+import { useDebouncedCallback } from 'use-debounce';
+
 import { Box, CloseButton, TextInput } from '@mantine/core';
 import { ENTER_KEY } from '@/components/TodoMvc/constants';
 import { ITodo } from '@/components/TodoMvc/interfaces';
@@ -19,16 +22,18 @@ const defaultState = {
     priority: undefined,
 };
 
-export function SearchOrCreateInputBox(props: {
+export function SearchOrCreateInputBox(props: Readonly<{
     ref: Ref<HTMLInputElement>;
     disabled: boolean;
     value: string;
     onCreate: (todo: Omit<ITodo, 'id'>) => void;
-    onChange: ChangeEventHandler<HTMLInputElement>;
+    onSearch: (value: string) => void;
     onClearInput: MouseEventHandler<HTMLButtonElement>;
     leftSection: ReactNode;
-}) {
+}>) {
     const { t } = useI18n();
+
+    const [value, setValue] = useState(props.value);
 
     const [state, setState] =
         useState<Omit<ITodo, 'id' | 'title'>>(defaultState);
@@ -55,6 +60,15 @@ export function SearchOrCreateInputBox(props: {
         props.onClearInput(event);
     }
 
+    const debouncedSearch = useDebouncedCallback(props.onSearch, 300);
+
+    const handleChange = useCallback((e: ChangeEvent<HTMLInputElement>) => {
+        const nextValue = e.target.value;
+        setValue(nextValue)
+
+        debouncedSearch(nextValue);
+    }, [])
+
     return (
         <div className="header">
             <TextInput
@@ -64,8 +78,8 @@ export function SearchOrCreateInputBox(props: {
                 className="search-bar"
                 placeholder={t('searchBar.placeholder')}
                 onKeyDown={handleNewTodoKeyDown}
-                value={props.value}
-                onChange={props.onChange}
+                value={value}
+                onChange={handleChange}
                 leftSection={props.leftSection}
                 rightSection={
                     props.value ? (
