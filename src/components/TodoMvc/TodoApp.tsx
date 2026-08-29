@@ -134,7 +134,7 @@ export class TodoApp extends React.Component<IAppProps, IAppState> {
         };
         const shownTodos = todos.filter(filter);
 
-        const sortedTodos = shownTodos.sort((a, b) => {
+        const sortedTodos = shownTodos.toSorted((a, b) => {
             if (b.title === a.title) {
                 return 0;
             }
@@ -182,22 +182,14 @@ export class TodoApp extends React.Component<IAppProps, IAppState> {
                     disabled={!!this.state.adding}
                     onCreate={this.handleCreate.bind(this)}
                     value={this.state.searching}
-                    onChange={this.search.bind(this)}
-                    onClearInput={this.search.bind(this, {} as any)}
+                    onSearch={this.search.bind(this)}
+                    onClearInput={this.search.bind(this, '')}
+                    // TODO replace removed toggle-all with batch edit feature 
                     leftSection={
-                        // TODO replace with batch edit feature
-                        <>
-                            <input
-                                id="toggle-all"
-                                className="toggle-all"
-                                type="checkbox"
-                                onChange={(e) => this.toggleAll(e)}
-                                checked={activeTodoCount === 0}
-                            />
-                            <label htmlFor="toggle-all">
-                                Mark all as complete
-                            </label>
-                        </>
+                        <div
+                            id="toggle-all"
+                            className="toggle-all"
+                        />
                     }
                 />
                 {main}
@@ -206,10 +198,7 @@ export class TodoApp extends React.Component<IAppProps, IAppState> {
         );
     }
 
-    public search(event: React.FormEvent) {
-        const input: any = event.currentTarget;
-        const searching = input?.value ?? '';
-
+    public search(searching: string) {
         this.setState({ searching });
     }
 }
