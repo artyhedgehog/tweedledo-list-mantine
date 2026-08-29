@@ -38,7 +38,7 @@ export function SearchOrCreateInputBox(props: Readonly<{
     const [state, setState] =
         useState<Omit<ITodo, 'id' | 'title'>>(defaultState);
 
-    const trimmedValue = props.value.trim();
+    const trimmedValue = value.trim();
 
     function handleNewTodoKeyDown(event: React.KeyboardEvent) {
         if (event.keyCode !== ENTER_KEY) {
@@ -52,11 +52,14 @@ export function SearchOrCreateInputBox(props: Readonly<{
                 title: trimmedValue,
                 ...state,
             });
+
+            setValue('');
         }
     }
 
     function handleClearInput(event: MouseEvent<HTMLButtonElement>) {
         setState(defaultState);
+        setValue('');
         props.onClearInput(event);
     }
 
@@ -82,7 +85,7 @@ export function SearchOrCreateInputBox(props: Readonly<{
                 onChange={handleChange}
                 leftSection={props.leftSection}
                 rightSection={
-                    props.value ? (
+                    value ? (
                         <CloseButton onClick={handleClearInput} />
                     ) : undefined
                 }
@@ -100,6 +103,8 @@ export function SearchOrCreateInputBox(props: Readonly<{
                                 title: trimmedValue,
                                 ...state,
                             });
+
+                            setValue('');
                         }}
                         onArchive={() => {
                             props.onCreate({
@@ -107,6 +112,8 @@ export function SearchOrCreateInputBox(props: Readonly<{
                                 ...state,
                                 archived: true,
                             });
+
+                            setValue('');
                         }}
                         onSetPriority={() => {
                             setState((previous) => {

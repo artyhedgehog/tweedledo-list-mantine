@@ -183,7 +183,7 @@ export class TodoApp extends React.Component<IAppProps, IAppState> {
                     onCreate={this.handleCreate.bind(this)}
                     value={this.state.searching}
                     onSearch={this.search.bind(this)}
-                    onClearInput={this.search.bind(this, {} as any)}
+                    onClearInput={this.search.bind(this, '')}
                     leftSection={
                         // TODO replace with batch edit feature
                         <>
