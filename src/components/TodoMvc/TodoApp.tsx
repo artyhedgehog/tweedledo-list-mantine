@@ -184,20 +184,12 @@ export class TodoApp extends React.Component<IAppProps, IAppState> {
                     value={this.state.searching}
                     onSearch={this.search.bind(this)}
                     onClearInput={this.search.bind(this, '')}
+                    // TODO replace removed toggle-all with batch edit feature 
                     leftSection={
-                        // TODO replace with batch edit feature
-                        <>
-                            <input
-                                id="toggle-all"
-                                className="toggle-all"
-                                type="checkbox"
-                                onChange={(e) => this.toggleAll(e)}
-                                checked={activeTodoCount === 0}
-                            />
-                            <label htmlFor="toggle-all">
-                                Mark all as complete
-                            </label>
-                        </>
+                        <div
+                            id="toggle-all"
+                            className="toggle-all"
+                        />
                     }
                 />
                 {main}
